@@ -1,10 +1,19 @@
+#+title: Documentation of Tetris Project SEM II Project#include<fstream>
+
+* Preprocessors
+This project uses SDL so that has been included. fstream is for file i/o functions because we define our initial game state in a file called initial_state.txt inside the game_states folder. ctime is to get current time for file name.
+#+begin_src C
 #include<SDL2/SDL.h>
 #include<fstream>
 #include<ctime>
 #include<string>
 
 using namespace std;
+#+end_src
 
+* Initial Grid
+This function defines our initial game grid by taking input from the initial_state file.
+#+begin_src C
 void initial_state(int grid[20][10]) {
   fstream init_state;
 
@@ -19,17 +28,23 @@ void initial_state(int grid[20][10]) {
   }
   init_state.close();
 }
+#+end_src
 
+* Creating game file
+Each game is recorded in the form of a txt file. This function creates the .txt file with file name in the format "year month month_day hour min.txt".
+#+begin_src C
 void create_log_file(){
   fstream log;
   time_t t = time(0);
   tm *now = localtime(&t);
-  //year mon mday hour min
   string file_name = "./game_states/" + to_string(now->tm_year + 1900) + to_string(now->tm_mon + 1) + to_string(now->tm_mday) + to_string(now->tm_hour) + to_string(now->tm_min) + ".txt";
   log.open(file_name, ios::out);
   log.close();
 }
+#+end_src
 
+* The main function starts here
+#+begin_src C
 int main(int argc, char * argv[]) {
   int grid[20][10];
 
@@ -51,3 +66,4 @@ int main(int argc, char * argv[]) {
   SDL_Quit();
   return 0;
 }
+#+end_src
