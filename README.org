@@ -20,7 +20,7 @@ void initial_state(int grid[20][10]) {
   init_state.open("./game_states/initial_state.txt", ios::in);
 
   for(int i = 0; i < 20; i++) {
-    for(int j = 0; j< 10; j++) {
+    for(int j = 0; j < 10; j++) {
       init_state >> grid[i][j];
       if(init_state.eof()){break;}
     }
