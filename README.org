@@ -1,7 +1,7 @@
-#+title: Documentation of Tetris Project SEM II Project#include<fstream>
+#+title: Documentation of Tetris Project SEM II Project
 
 * Preprocessors
-This project uses SDL so that has been included. fstream is for file i/o functions because we define our initial game state in a file called initial_state.txt inside the game_states folder. ctime is to get current time for file name.
+This project uses SDL so that has been included. fstream is for file i/o functions because we define our initial game state in a file called initial_state.txt inside the game_states folder. ctime is to get current time for file name. string is there because the current time is returned as int but we need it as a string.
 #+begin_src C
 #include<SDL2/SDL.h>
 #include<fstream>
@@ -32,6 +32,7 @@ void initial_state(int grid[20][10]) {
 
 * Creating game file
 Each game is recorded in the form of a txt file. This function creates the .txt file with file name in the format "year month month_day hour min.txt".
+Here the to_string() function is a function from <string> that converts all types of int to string.
 #+begin_src C
 void create_log_file(){
   fstream log;
