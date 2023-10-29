@@ -1,4 +1,4 @@
-#+title: KU B.Tech AI I/II Project
+# KU B.Tech AI I/II Project
 
-* Tetris
+## Tetris
 SDL library was used to create this project.
