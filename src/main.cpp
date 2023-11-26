@@ -1,15 +1,25 @@
-#include<SDL2/SDL.h>
-#include<SDL2/SDL_image.h>
-#include<iostream>
-#include<string>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <iostream>
+#include <string>
+
 using namespace std;
 
 int _SCREENWIDTH = 1920, _SCREENHEIGHT = 1080, _BLOCKSIZE = 100;
-enum shape {_I, _O, _T, _J, _L, _S, _Z};
+enum shape
+{
+	_I,
+	_O,
+	_T,
+	_J,
+	_L,
+	_S,
+	_Z
+};
 
-SDL_Window* window = NULL;
-SDL_Surface* screensurface = NULL;
-SDL_Renderer* renderer = NULL;
+SDL_Window *window = NULL;
+SDL_Surface *screensurface = NULL;
+SDL_Renderer *renderer = NULL;
 
 bool _INIT()
 {
@@ -30,12 +40,12 @@ bool _INIT()
 		else
 		{
 			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-			if(renderer == NULL)
+			if (renderer == NULL)
 			{
 				cout << "Renderer could not be intialized, error : " << SDL_GetError() << endl;
 				key = false;
 			}
-			if(!IMG_Init(IMG_INIT_PNG))
+			if (!IMG_Init(IMG_INIT_PNG))
 			{
 				cout << "SDL_image could not be intialized, error : " << IMG_GetError() << endl;
 				key = false;
@@ -45,10 +55,10 @@ bool _INIT()
 	return key;
 }
 
-SDL_Texture* GetTexture(string path)
+SDL_Texture *GetTexture(string path)
 {
 	SDL_Texture *newTexture = NULL;
-	SDL_Surface* loadSurface = IMG_Load(path.c_str());
+	SDL_Surface *loadSurface = IMG_Load(path.c_str());
 	if (loadSurface == NULL)
 		cout << "Image could not be loaded, error : " << IMG_GetError() << endl;
 	else
@@ -63,14 +73,15 @@ SDL_Texture* GetTexture(string path)
 
 class tetromino
 {
-	public:
-		tetromino(SDL_Point p, shape _ShapeVal);
-		~tetromino();
-		void Render();
-	private:
-		SDL_Rect _Blocks[4];
-		SDL_Point _Center;
-		SDL_Texture *Tile;
+public:
+	tetromino(SDL_Point p, shape _ShapeVal);
+	~tetromino();
+	void Render();
+
+private:
+	SDL_Rect _Blocks[4];
+	SDL_Point _Center;
+	SDL_Texture *Tile;
 };
 
 tetromino::tetromino(SDL_Point p, shape _ShapeVal)
@@ -86,7 +97,7 @@ tetromino::tetromino(SDL_Point p, shape _ShapeVal)
 
 void tetromino::Render()
 {
-	for(int i=0; i <=4 ; i++)
+	for (int i = 0; i <= 4; i++)
 		SDL_RenderCopy(renderer, Tile, NULL, &_Blocks[i]);
 }
 
@@ -96,24 +107,23 @@ tetromino::~tetromino()
 	Tile = NULL;
 }
 
-int main(int argc, char* args[])
+int main(int argc, char *args[])
 {
 	if (_INIT())
 	{
 		SDL_Point p = {300, 300};
-		tetromino a(p, _O);		
+		tetromino a(p, _O);
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderClear(renderer);
 		a.Render();
 		SDL_RenderPresent(renderer);
-		
+
 		SDL_Event e;
 		bool quit = false;
-		while(quit == false)
-			while(SDL_PollEvent(&e))
-				if(e.type == SDL_QUIT)
+		while (quit == false)
+			while (SDL_PollEvent(&e))
+				if (e.type == SDL_QUIT)
 					quit = true;
-		
 	}
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
