@@ -97,7 +97,7 @@ tetromino::tetromino(SDL_Point p, shape _ShapeVal)
 
 void tetromino::Render()
 {
-	for (int i = 0; i <= 4; i++)
+	for (int i = 0; i <= 3; i++)
 		SDL_RenderCopy(renderer, Tile, NULL, &_Blocks[i]);
 }
 
