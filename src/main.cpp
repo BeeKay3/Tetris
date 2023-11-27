@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int _SCREENWIDTH = 1920, _SCREENHEIGHT = 1080, _BLOCKSIZE = 100;
+const int _SCREENWIDTH = 1920, _SCREENHEIGHT = 1080, _BLOCKSIZE = 100;
 enum shape
 {
 	_I,
@@ -18,8 +18,21 @@ enum shape
 };
 
 SDL_Window *window = NULL;
-SDL_Surface *screensurface = NULL;
 SDL_Renderer *renderer = NULL;
+SDL_Texture *BaseTile = NULL;
+
+class tetromino
+{
+public:
+	tetromino(SDL_Point p, shape _ShapeVal);
+	~tetromino();
+	void Render();
+
+private:
+	SDL_Rect _Blocks[4];
+	SDL_Point _Center;
+	SDL_Texture *Tile;
+};
 
 bool _INIT()
 {
@@ -71,18 +84,16 @@ SDL_Texture *GetTexture(string path)
 	return newTexture;
 }
 
-class tetromino
+void _CLOSE()
 {
-public:
-	tetromino(SDL_Point p, shape _ShapeVal);
-	~tetromino();
-	void Render();
-
-private:
-	SDL_Rect _Blocks[4];
-	SDL_Point _Center;
-	SDL_Texture *Tile;
-};
+	SDL_DestroyTexture(BaseTile);
+	BaseTile = NULL;
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	renderer = NULL;
+	window = NULL;
+	SDL_Quit();
+}
 
 tetromino::tetromino(SDL_Point p, shape _ShapeVal)
 {
@@ -91,7 +102,7 @@ tetromino::tetromino(SDL_Point p, shape _ShapeVal)
 	_Blocks[1] = {_Center.x + _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
 	_Blocks[2] = {_Center.x + _BLOCKSIZE, _Center.y + _BLOCKSIZE, _BLOCKSIZE, _BLOCKSIZE};
 	_Blocks[3] = {_Center.x, _Center.y + _BLOCKSIZE, _BLOCKSIZE, _BLOCKSIZE};
-	Tile = GetTexture("assets/img/block.png");
+	Tile = BaseTile;
 	SDL_SetTextureColorMod(Tile, 255, 255, 0);
 }
 
@@ -111,8 +122,10 @@ int main(int argc, char *args[])
 {
 	if (_INIT())
 	{
+		BaseTile = GetTexture("assets/img/block.png");
 		SDL_Point p = {300, 300};
 		tetromino a(p, _O);
+		
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderClear(renderer);
 		a.Render();
@@ -125,10 +138,6 @@ int main(int argc, char *args[])
 				if (e.type == SDL_QUIT)
 					quit = true;
 	}
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	renderer = NULL;
-	window = NULL;
-	SDL_Quit();
+	_CLOSE();
 	return 0;
 }
