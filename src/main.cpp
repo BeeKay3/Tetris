@@ -175,8 +175,8 @@ int main(int argc, char *args[])
 	{
 		BaseTile = GetTexture("assets/img/block.png");
 		SDL_Point p = {300, 300};
-		tetromino a(p, _I);
-		
+		tetromino a(p, _Z);
+
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderClear(renderer);
 		a.Render();
