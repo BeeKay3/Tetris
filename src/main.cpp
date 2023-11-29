@@ -4,9 +4,10 @@
 #include <string>
 #include "../headers/GetTexture.h"
 #include "../headers/Tetromino.h"
+#include "../headers/board.h"
 using namespace std;
 
-const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 100;
+const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 50;
 
 SDL_Window *Window = NULL;
 SDL_Renderer *Renderer = NULL;
@@ -61,11 +62,9 @@ int main(int argc, char *args[])
 		SDL_Texture *BaseTile = GetTexture(Renderer, "assets/img/block.png");
 		SDL_Point p = {300, 300};
 		tetromino a(p, L_Shape, BLOCKSIZE, BaseTile);
-
 		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
 		SDL_RenderClear(Renderer);
-		a.Render(Renderer);
-		SDL_RenderPresent(Renderer);
+		Board b(Renderer, BLOCKSIZE);
 
 		SDL_Event e;
 		bool quit = false;
