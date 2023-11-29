@@ -11,7 +11,7 @@ const int VERTICALSHIFT = 40, HORIZONTALSHIFT = 710;
 int boardWidth, boardHeight;
 std::fstream log;
 
-Board::Board(SDL_Renderer *renderer, int BLOCKSIZE)
+Board::Board(SDL_Renderer *Renderer, int BLOCKSIZE)
 {
     std::fstream init_state;
 
@@ -48,10 +48,20 @@ Board::Board(SDL_Renderer *renderer, int BLOCKSIZE)
     boardHeight = BLOCKSIZE * 20;
     boardWidth = BLOCKSIZE * 10;
     background = {HORIZONTALSHIFT, VERTICALSHIFT, boardWidth, boardHeight};
+    renderer = Renderer;
+    baseTile = GetTexture(renderer, "./assets/img/block.png");
+    update();
+}
+
+Board::~Board()
+{
+    log.close();
+};
+
+void Board::update()
+{
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderFillRect(renderer, &background);
-
-    SDL_Texture *baseTile = GetTexture(renderer, "./assets/img/block.png");
     for (int i = 0; i < 20; i++)
     {
         for (int j = 0; j < 10; j++)
@@ -67,7 +77,3 @@ Board::Board(SDL_Renderer *renderer, int BLOCKSIZE)
     }
     SDL_RenderPresent(renderer);
 }
-Board::~Board()
-{
-    log.close();
-};
