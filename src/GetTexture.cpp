@@ -6,16 +6,16 @@
 
 SDL_Texture *GetTexture(SDL_Renderer *renderer, std::string path)
 {
-	SDL_Texture *newTexture = NULL;
-	SDL_Surface *loadSurface = IMG_Load(path.c_str());
-	if (loadSurface == NULL)
+	SDL_Texture *NewTexture = NULL;
+	SDL_Surface *LoadSurface = IMG_Load(path.c_str());
+	if (LoadSurface == NULL)
 		std::cout << "Image could not be loaded, error : " << IMG_GetError() << std::endl;
 	else
 	{
-		newTexture = SDL_CreateTextureFromSurface(renderer, loadSurface);
-		if (newTexture == NULL)
+		NewTexture = SDL_CreateTextureFromSurface(renderer, LoadSurface);
+		if (NewTexture == NULL)
 			std::cout << "Texture could not be created, error : " << SDL_GetError() << std::endl;
-		SDL_FreeSurface(loadSurface);
+		SDL_FreeSurface(LoadSurface);
 	}
-	return newTexture;
+	return NewTexture;
 }

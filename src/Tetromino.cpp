@@ -3,72 +3,72 @@
 #include "../headers/Tetromino.h"
 #include "../headers/GetTexture.h"
 
-tetromino::tetromino(SDL_Point p, shape ShapeVal, int _BLOCKSIZE, SDL_Texture *BaseTile)
+tetromino::tetromino(SDL_Point p, shape ShapeVal, int BLOCKSIZE, SDL_Texture *BaseTile)
 {
-	_Center = p;
+	Center = p;
 	Tile = BaseTile;
-	if (ShapeVal == _O)
+	if (ShapeVal == O_Shape)
 	{
-		_Blocks[0] = {_Center.x, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[1] = {_Center.x + _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[2] = {_Center.x + _BLOCKSIZE, _Center.y + _BLOCKSIZE, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[3] = {_Center.x, _Center.y + _BLOCKSIZE, _BLOCKSIZE, _BLOCKSIZE};
+		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[1] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[2] = {Center.x + BLOCKSIZE, Center.y + BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
+		Blocks[3] = {Center.x, Center.y + BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 255, 255, 0);
 	}
-	else if (ShapeVal == _T)
+	else if (ShapeVal == T_Shape)
 	{
-		_Blocks[0] = {_Center.x, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[1] = {_Center.x, _Center.y - _BLOCKSIZE, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[2] = {_Center.x + _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[3] = {_Center.x - _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
+		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[1] = {Center.x, Center.y - BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
+		Blocks[2] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[3] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 150, 0, 255);
 	}
-	else if (ShapeVal == _J)
+	else if (ShapeVal == J_Shape)
 	{
-		_Blocks[0] = {_Center.x, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[1] = {_Center.x + _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[2] = {_Center.x - _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[3] = {_Center.x - _BLOCKSIZE, _Center.y - _BLOCKSIZE, _BLOCKSIZE, _BLOCKSIZE};
+		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[1] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[2] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[3] = {Center.x - BLOCKSIZE, Center.y - BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 0, 0, 255);
 	}
-	else if (ShapeVal == _L)
+	else if (ShapeVal == L_Shape)
 	{
-		_Blocks[0] = {_Center.x, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[1] = {_Center.x + _BLOCKSIZE, _Center.y - _BLOCKSIZE, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[2] = {_Center.x + _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[3] = {_Center.x - _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
+		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[1] = {Center.x + BLOCKSIZE, Center.y - BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
+		Blocks[2] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[3] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 255, 150, 0);
 	}
-	else if (ShapeVal == _S)
+	else if (ShapeVal == S_Shape)
 	{
-		_Blocks[0] = {_Center.x, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[1] = {_Center.x + _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[2] = {_Center.x, _Center.y + _BLOCKSIZE, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[3] = {_Center.x - _BLOCKSIZE, _Center.y + _BLOCKSIZE, _BLOCKSIZE, _BLOCKSIZE};
+		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[1] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[2] = {Center.x, Center.y + BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
+		Blocks[3] = {Center.x - BLOCKSIZE, Center.y + BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 50, 255, 0);
 	}
-	else if (ShapeVal == _Z)
+	else if (ShapeVal == Z_Shape)
 	{
-		_Blocks[0] = {_Center.x, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[1] = {_Center.x + _BLOCKSIZE, _Center.y + _BLOCKSIZE, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[2] = {_Center.x, _Center.y + _BLOCKSIZE, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[3] = {_Center.x - _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
+		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[1] = {Center.x + BLOCKSIZE, Center.y + BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
+		Blocks[2] = {Center.x, Center.y + BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
+		Blocks[3] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 255, 0, 0);
 	}
-	else if (ShapeVal == _I)
+	else if (ShapeVal == I_Shape)
 	{
-		_Blocks[0] = {_Center.x + _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[1] = {_Center.x, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[2] = {_Center.x - _BLOCKSIZE, _Center.y, _BLOCKSIZE, _BLOCKSIZE};
-		_Blocks[3] = {_Center.x - (2 * _BLOCKSIZE), _Center.y, _BLOCKSIZE, _BLOCKSIZE};
+		Blocks[0] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[1] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[2] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
+		Blocks[3] = {Center.x - (2 * BLOCKSIZE), Center.y, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 0, 190, 255);
 	}
 }
 
-void tetromino::Render(SDL_Renderer *renderer)
+void tetromino::Render(SDL_Renderer *Renderer)
 {
 	for (int i = 0; i <= 3; i++)
-		SDL_RenderCopy(renderer, Tile, NULL, &_Blocks[i]);
+		SDL_RenderCopy(Renderer, Tile, NULL, &Blocks[i]);
 }
 
 tetromino::~tetromino()

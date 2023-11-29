@@ -4,25 +4,25 @@
 
 enum shape
 {
-	_I,
-	_O,
-	_T,
-	_J,
-	_L,
-	_S,
-	_Z
+	I_Shape,
+	O_Shape,
+	T_Shape,
+	J_Shape,
+	L_Shape,
+	S_Shape,
+	Z_Shape
 };
 
 class tetromino
 {
 public:
-	tetromino(SDL_Point p, shape ShapeVal, int _BLOCKSIZE, SDL_Texture *BaseTile);
+	tetromino(SDL_Point p, shape ShapeVal, int BLOCKSIZE, SDL_Texture *BaseTile);
 	~tetromino();
-	void Render(SDL_Renderer *renderer);
+	void Render(SDL_Renderer *Renderer);
 
 private:
-	SDL_Rect _Blocks[4];
-	SDL_Point _Center;
+	SDL_Rect Blocks[4];
+	SDL_Point Center;
 	SDL_Texture *Tile;
 };
 

@@ -6,66 +6,66 @@
 #include "../headers/Tetromino.h"
 using namespace std;
 
-const int _SCREENWIDTH = 1920, _SCREENHEIGHT = 1080, _BLOCKSIZE = 100;
+const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 100;
 
-SDL_Window *window = NULL;
-SDL_Renderer *renderer = NULL;
+SDL_Window *Window = NULL;
+SDL_Renderer *Renderer = NULL;
 
-bool _INIT()
+bool INIT()
 {
-	bool key = true;
+	bool Key = true;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		cout << "SDL could not be initialized, error : " << SDL_GetError() << endl;
-		key = false;
+		Key = false;
 	}
 	else
 	{
-		window = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, _SCREENWIDTH, _SCREENHEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
-		if (window == NULL)
+		Window = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREENWIDTH, SCREENHEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
+		if (Window == NULL)
 		{
 			cout << "Window could not be created, error : " << SDL_GetError() << endl;
-			key = false;
+			Key = false;
 		}
 		else
 		{
-			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-			if (renderer == NULL)
+			Renderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED);
+			if (Renderer == NULL)
 			{
 				cout << "Renderer could not be intialized, error : " << SDL_GetError() << endl;
-				key = false;
+				Key = false;
 			}
 			if (!IMG_Init(IMG_INIT_PNG))
 			{
 				cout << "SDL_image could not be intialized, error : " << IMG_GetError() << endl;
-				key = false;
+				Key = false;
 			}
 		}
 	}
-	return key;
+	return Key;
 }
 
-void _CLOSE()
+void CLOSE()
 {
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	renderer = NULL;
-	window = NULL;
+	SDL_DestroyRenderer(Renderer);
+	SDL_DestroyWindow(Window);
+	Renderer = NULL;
+	Window = NULL;
 	SDL_Quit();
 }
 
 int main(int argc, char *args[])
 {
-	if (_INIT())
+	if (INIT())
 	{
-		SDL_Texture *BaseTile = GetTexture(renderer, "assets/img/block.png");
+		SDL_Texture *BaseTile = GetTexture(Renderer, "assets/img/block.png");
 		SDL_Point p = {300, 300};
-		tetromino a(p, _J, _BLOCKSIZE, BaseTile);
+		tetromino a(p, L_Shape, BLOCKSIZE, BaseTile);
 
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_RenderClear(renderer);
-		a.Render(renderer);
-		SDL_RenderPresent(renderer);
+		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
+		SDL_RenderClear(Renderer);
+		a.Render(Renderer);
+		SDL_RenderPresent(Renderer);
 
 		SDL_Event e;
 		bool quit = false;
@@ -74,6 +74,6 @@ int main(int argc, char *args[])
 				if (e.type == SDL_QUIT)
 					quit = true;
 	}
-	_CLOSE();
+	CLOSE();
 	return 0;
 }
