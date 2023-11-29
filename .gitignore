@@ -1,2 +1,4 @@
 *.exe
-game_states/
+/game_states/*.txt
+
+!/game_states/initial_state.txt
