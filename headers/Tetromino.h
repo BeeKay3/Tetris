@@ -19,6 +19,7 @@ public:
 	tetromino(int b, SDL_Texture *Base);
 	~tetromino();
 	void Update(SDL_Point p, shape s);
+	void Update(SDL_Point p);
 	void Render(SDL_Renderer *Renderer);
 	void Rotate();
 	void GetBlocks(SDL_Rect *Arr);

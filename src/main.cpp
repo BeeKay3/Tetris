@@ -59,15 +59,16 @@ int main(int argc, char *args[])
 	if (INIT())
 	{
 		SDL_Texture *BaseTile = GetTexture(Renderer, "assets/img/block.png");
-		SDL_Point p = {300, 300};
+		SDL_Point p1 = {300, 300}, p2 = {1000, 500};
 		tetromino a(BLOCKSIZE, BaseTile);
 		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
 
 		SDL_RenderClear(Renderer);
-		a.Update(p, I_Shape);
+		a.Update(p1, I_Shape);
+		a.Update(p2, T_Shape);
 		a.Render(Renderer);
 		SDL_RenderPresent(Renderer);
-		
+
 		SDL_Event e;
 		bool quit = false;
 		while (quit == false)

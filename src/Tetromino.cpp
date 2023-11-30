@@ -11,9 +11,35 @@ tetromino::tetromino(int b, SDL_Texture *Base)
 
 void tetromino::Update(SDL_Point p, shape s)
 {
-	Center = p;
 	ShapeVal = s;
 	Tile = BaseTile;
+	if (ShapeVal == O_Shape)
+		SDL_SetTextureColorMod(Tile, 255, 255, 0);
+
+	else if (ShapeVal == T_Shape)
+		SDL_SetTextureColorMod(Tile, 150, 0, 255);
+
+	else if (ShapeVal == J_Shape)
+		SDL_SetTextureColorMod(Tile, 0, 0, 255);
+
+	else if (ShapeVal == L_Shape)
+		SDL_SetTextureColorMod(Tile, 255, 150, 0);
+
+	else if (ShapeVal == S_Shape)
+		SDL_SetTextureColorMod(Tile, 50, 255, 0);
+
+	else if (ShapeVal == Z_Shape)
+		SDL_SetTextureColorMod(Tile, 255, 0, 0);
+
+	else if (ShapeVal == I_Shape)
+		SDL_SetTextureColorMod(Tile, 0, 190, 255);
+
+	Update(p);
+}
+
+void tetromino::Update(SDL_Point p)
+{
+	Center = p;
 	if (ShapeVal == O_Shape)
 	{
 		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
