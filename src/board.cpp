@@ -69,8 +69,42 @@ void Board::update()
             log << valueGrid[i][j] << " ";
             if (valueGrid[i][j] != 0)
             {
-                SDL_SetTextureColorMod(baseTile, 255, 255, 0);
-                SDL_RenderCopy(renderer, baseTile, NULL, &visibleGrid[i][j]);
+                if (valueGrid[i][j] == 1)
+                {
+                    SDL_SetTextureColorMod(baseTile, 60, 248, 251);
+                    SDL_RenderCopy(renderer, baseTile, NULL, &visibleGrid[i][j]);
+                }
+                //! needs to be updated
+                else if (valueGrid[i][j] == 2)
+                {
+                    SDL_SetTextureColorMod(baseTile, 255, 248, 0);
+                    SDL_RenderCopy(renderer, baseTile, NULL, &visibleGrid[i][j]);
+                }
+                else if (valueGrid[i][j] == 3)
+                {
+                    SDL_SetTextureColorMod(baseTile, 231, 9, 212);
+                    SDL_RenderCopy(renderer, baseTile, NULL, &visibleGrid[i][j]);
+                }
+                else if (valueGrid[i][j] == 4)
+                {
+                    SDL_SetTextureColorMod(baseTile, 7, 106, 182);
+                    SDL_RenderCopy(renderer, baseTile, NULL, &visibleGrid[i][j]);
+                }
+                else if (valueGrid[i][j] == 5)
+                {
+                    SDL_SetTextureColorMod(baseTile, 236, 159, 5);
+                    SDL_RenderCopy(renderer, baseTile, NULL, &visibleGrid[i][j]);
+                }
+                else if (valueGrid[i][j] == 6)
+                {
+                    SDL_SetTextureColorMod(baseTile, 168, 233, 28);
+                    SDL_RenderCopy(renderer, baseTile, NULL, &visibleGrid[i][j]);
+                }
+                else if (valueGrid[i][j] == 7)
+                {
+                    SDL_SetTextureColorMod(baseTile, 246, 3, 3);
+                    SDL_RenderCopy(renderer, baseTile, NULL, &visibleGrid[i][j]);
+                }
             }
         }
         log << std::endl;
