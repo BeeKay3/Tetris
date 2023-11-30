@@ -60,10 +60,11 @@ int main(int argc, char *args[])
 	{
 		SDL_Texture *BaseTile = GetTexture(Renderer, "assets/img/block.png");
 		SDL_Point p = {300, 300};
-		tetromino a(p, T_Shape, BLOCKSIZE, BaseTile);
+		tetromino a(BLOCKSIZE, BaseTile);
 		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
 
 		SDL_RenderClear(Renderer);
+		a.Update(p, I_Shape);
 		a.Render(Renderer);
 		SDL_RenderPresent(Renderer);
 		

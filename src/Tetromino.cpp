@@ -3,11 +3,16 @@
 #include "../headers/Tetromino.h"
 #include "../headers/GetTexture.h"
 
-tetromino::tetromino(SDL_Point p, shape s, int b, SDL_Texture *BaseTile)
+tetromino::tetromino(int b, SDL_Texture *Base)
+{
+	BLOCKSIZE = b;
+	BaseTile = Base;
+}
+
+void tetromino::Update(SDL_Point p, shape s)
 {
 	Center = p;
 	ShapeVal = s;
-	BLOCKSIZE = b;
 	Tile = BaseTile;
 	if (ShapeVal == O_Shape)
 	{
