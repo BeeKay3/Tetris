@@ -3,9 +3,11 @@
 #include "../headers/Tetromino.h"
 #include "../headers/GetTexture.h"
 
-tetromino::tetromino(SDL_Point p, shape ShapeVal, int BLOCKSIZE, SDL_Texture *BaseTile)
+tetromino::tetromino(SDL_Point p, shape s, int b, SDL_Texture *BaseTile)
 {
 	Center = p;
+	ShapeVal = s;
+	BLOCKSIZE = b;
 	Tile = BaseTile;
 	if (ShapeVal == O_Shape)
 	{
@@ -62,6 +64,30 @@ tetromino::tetromino(SDL_Point p, shape ShapeVal, int BLOCKSIZE, SDL_Texture *Ba
 		Blocks[2] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[3] = {Center.x - (2 * BLOCKSIZE), Center.y, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 0, 190, 255);
+	}
+}
+
+void tetromino::Rotate()
+{
+	if (ShapeVal != O_Shape)
+	{
+		SDL_Point RotationCenter = Center;
+		if (ShapeVal == I_Shape)
+		{
+			RotationCenter.x -= BLOCKSIZE / 2;
+			RotationCenter.y -= BLOCKSIZE / 2;
+		}
+		int temp;
+		for( int i = 0; i <=3; i++)
+		{
+			Blocks[i].x -= RotationCenter.x;
+			Blocks[i].y -= RotationCenter.y; 
+			temp = Blocks[i].x;
+			Blocks[i].x = -Blocks[i].y;
+			Blocks[i].y = temp;
+			Blocks[i].x += RotationCenter.x;
+			Blocks[i].y += RotationCenter.y; 
+		}
 	}
 }
 

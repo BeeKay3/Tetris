@@ -60,19 +60,28 @@ int main(int argc, char *args[])
 	{
 		SDL_Texture *BaseTile = GetTexture(Renderer, "assets/img/block.png");
 		SDL_Point p = {300, 300};
-		tetromino a(p, L_Shape, BLOCKSIZE, BaseTile);
-
+		tetromino a(p, T_Shape, BLOCKSIZE, BaseTile);
 		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
+
 		SDL_RenderClear(Renderer);
 		a.Render(Renderer);
 		SDL_RenderPresent(Renderer);
-
+		
 		SDL_Event e;
 		bool quit = false;
 		while (quit == false)
+		{
 			while (SDL_PollEvent(&e))
 				if (e.type == SDL_QUIT)
 					quit = true;
+				else if (e.type == SDL_KEYDOWN)
+					if (e.key.keysym.sym == SDLK_SPACE)
+						a.Rotate();
+
+			SDL_RenderClear(Renderer);
+			a.Render(Renderer);
+			SDL_RenderPresent(Renderer);
+		}
 	}
 	CLOSE();
 	return 0;
