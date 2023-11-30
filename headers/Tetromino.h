@@ -20,6 +20,7 @@ public:
 	~tetromino();
 	void Render(SDL_Renderer *Renderer);
 	void Rotate();
+	void GetBlocks(SDL_Rect *Arr);
 
 private:
 	shape ShapeVal;

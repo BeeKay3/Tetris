@@ -97,6 +97,11 @@ void tetromino::Render(SDL_Renderer *Renderer)
 		SDL_RenderCopy(Renderer, Tile, NULL, &Blocks[i]);
 }
 
+void tetromino::GetBlocks(SDL_Rect *Arr)
+{
+	for (int i = 0; i <= 3; i++)
+		*(Arr+i) = Blocks[i];
+}
 tetromino::~tetromino()
 {
 	SDL_DestroyTexture(Tile);
