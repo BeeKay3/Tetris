@@ -29,7 +29,7 @@ bool INIT()
 		}
 		else
 		{
-			Renderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED);
+			Renderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (Renderer == NULL)
 			{
 				cout << "Renderer could not be intialized, error : " << SDL_GetError() << endl;
@@ -59,27 +59,30 @@ int main(int argc, char *args[])
 	if (INIT())
 	{
 		SDL_Texture *BaseTile = GetTexture(Renderer, "assets/img/block.png");
-		SDL_Point p1 = {300, 300}, p2 = {1000, 500};
+		SDL_Point  p2 = {1000, 100};
 		tetromino a(BLOCKSIZE, BaseTile);
 		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
-
 		SDL_RenderClear(Renderer);
-		a.Update(p1, I_Shape);
-		a.Update(p2, T_Shape);
-		a.Render(Renderer);
-		SDL_RenderPresent(Renderer);
+		a.Update(p2, Z_Shape);
 
 		SDL_Event e;
 		bool quit = false;
+		Uint64 CurrentTicks, FrameTicks;
+
+		CurrentTicks = SDL_GetTicks64();
 		while (quit == false)
 		{
 			while (SDL_PollEvent(&e))
 				if (e.type == SDL_QUIT)
 					quit = true;
-				else if (e.type == SDL_KEYDOWN)
-					if (e.key.keysym.sym == SDLK_SPACE)
-						a.Rotate();
-
+				else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE)
+					a.Rotate();
+			if ( SDL_GetTicks64() - CurrentTicks >= 1000)
+			{
+				CurrentTicks = SDL_GetTicks64();
+				p2.y += 30;
+				a.Update(p2);
+			}
 			SDL_RenderClear(Renderer);
 			a.Render(Renderer);
 			SDL_RenderPresent(Renderer);
