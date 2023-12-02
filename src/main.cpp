@@ -8,7 +8,6 @@
 using namespace std;
 
 const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 50;
-const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 50;
 
 SDL_Window *Window = NULL;
 SDL_Renderer *Renderer = NULL;
@@ -60,15 +59,9 @@ int main(int argc, char *args[])
 {
 	if (INIT())
 	{
-		SDL_Texture *BaseTile = GetTexture(Renderer, "assets/img/block.png");
-		SDL_Point p2 = {1000, 100};
-		tetromino a(BLOCKSIZE, BaseTile);
 		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
 		SDL_RenderClear(Renderer);
 		Board b(Renderer, BLOCKSIZE);
-		SDL_Point p2 = {1000, 100};
-		tetromino a(BLOCKSIZE, BaseTile);
-		a.Update(p2, Z_Shape);
 
 		SDL_Event e;
 		bool quit = false;
@@ -77,7 +70,9 @@ int main(int argc, char *args[])
 			while (SDL_PollEvent(&e))
 				if (e.type == SDL_QUIT)
 					quit = true;
+		}
+		CLOSE();
+		return 0;
 	}
-	CLOSE();
 	return 0;
 }
