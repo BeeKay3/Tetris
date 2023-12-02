@@ -8,6 +8,7 @@
 using namespace std;
 
 const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 50;
+const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 50;
 
 SDL_Window *Window = NULL;
 SDL_Renderer *Renderer = NULL;
@@ -30,7 +31,7 @@ bool INIT()
 		}
 		else
 		{
-			Renderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED);
+			Renderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (Renderer == NULL)
 			{
 				cout << "Renderer could not be intialized, error : " << SDL_GetError() << endl;
@@ -60,15 +61,19 @@ int main(int argc, char *args[])
 	if (INIT())
 	{
 		SDL_Texture *BaseTile = GetTexture(Renderer, "assets/img/block.png");
-		SDL_Point p = {300, 300};
-		tetromino a(p, L_Shape, BLOCKSIZE, BaseTile);
+		SDL_Point p2 = {1000, 100};
+		tetromino a(BLOCKSIZE, BaseTile);
 		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
 		SDL_RenderClear(Renderer);
 		Board b(Renderer, BLOCKSIZE);
+		SDL_Point p2 = {1000, 100};
+		tetromino a(BLOCKSIZE, BaseTile);
+		a.Update(p2, Z_Shape);
 
 		SDL_Event e;
 		bool quit = false;
 		while (quit == false)
+		{
 			while (SDL_PollEvent(&e))
 				if (e.type == SDL_QUIT)
 					quit = true;
