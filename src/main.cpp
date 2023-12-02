@@ -6,7 +6,7 @@
 #include "../headers/Tetromino.h"
 using namespace std;
 
-const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 100;
+const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 50;
 
 SDL_Window *Window = NULL;
 SDL_Renderer *Renderer = NULL;
@@ -59,7 +59,7 @@ int main(int argc, char *args[])
 	if (INIT())
 	{
 		SDL_Texture *BaseTile = GetTexture(Renderer, "assets/img/block.png");
-		SDL_Point  p2 = {1000, 100};
+		SDL_Point p2 = {1000, 100};
 		tetromino a(BLOCKSIZE, BaseTile);
 		SDL_SetRenderDrawColor(Renderer, 255, 255, 255, 255);
 		SDL_RenderClear(Renderer);
@@ -77,10 +77,10 @@ int main(int argc, char *args[])
 					quit = true;
 				else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE)
 					a.Rotate();
-			if ( SDL_GetTicks64() - CurrentTicks >= 1000)
+			if (SDL_GetTicks64() - CurrentTicks >= 1000)
 			{
 				CurrentTicks = SDL_GetTicks64();
-				p2.y += 30;
+				p2.y += 50;
 				a.Update(p2);
 			}
 			SDL_RenderClear(Renderer);
