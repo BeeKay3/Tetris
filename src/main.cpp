@@ -5,10 +5,10 @@
 #include "../headers/GetTexture.h"
 #include "../headers/Tetromino.h"
 #include "../headers/board.h"
+
 using namespace std;
 
-const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 50;
-
+const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 50, INITIAL_X = 910, INITIAL_Y = 40;
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 
@@ -64,15 +64,16 @@ int main(int argc, char *args[])
 		bool quit = false;
 		Uint64 currentTicks;
 		SDL_Texture *BASETILE = GetTexture(renderer, "assets/img/block.png");
-		SDL_Point pos = {910, 40};
-		shape randomShape;
+		const SDL_Point INITIAL_POS = {INITIAL_X, INITIAL_Y};
+		SDL_Point pos = INITIAL_POS;
+		SDL_Rect currentTetromino[4];
 
 		Board b(renderer, BLOCKSIZE);
-		tetromino t(renderer, BLOCKSIZE, BASETILE);
+		Tetromino t(renderer, BLOCKSIZE, BASETILE);
 
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderClear(renderer);
-		t.Update(pos, t.random());
+		t.update(pos, t.random());
 
 		while (quit == false)
 		{
@@ -81,18 +82,27 @@ int main(int argc, char *args[])
 					quit = true;
 				else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE)
 				{
-					t.Rotate();
+					t.rotate();
 				}
-			if (SDL_GetTicks64() - currentTicks >= 1000)
+			if (SDL_GetTicks64() - currentTicks >= 500)
 			{
 				currentTicks = SDL_GetTicks64();
+				t.getBlocks(currentTetromino);
 				pos.y += 50;
-				t.Update(pos);
+				if (b.collisionGround(currentTetromino))
+				{
+					t.update(INITIAL_POS, t.random());
+					pos = INITIAL_POS;
+				}
+				else
+				{
+					t.update(pos);
+				}
 			}
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 			SDL_RenderClear(renderer);
 			b.update();
-			t.Render();
+			t.render();
 			SDL_RenderPresent(renderer);
 		}
 		CLOSE();

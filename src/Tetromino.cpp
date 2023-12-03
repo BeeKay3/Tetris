@@ -5,14 +5,14 @@
 #include "../headers/Tetromino.h"
 #include "../headers/GetTexture.h"
 
-tetromino::tetromino(SDL_Renderer *Renderer, int b, SDL_Texture *Base)
+Tetromino::Tetromino(SDL_Renderer *Renderer, int b, SDL_Texture *Base)
 {
 	BLOCKSIZE = b;
 	BaseTile = Base;
 	renderer = Renderer;
 }
 
-void tetromino::Update(SDL_Point p, shape s)
+void Tetromino::update(SDL_Point p, shape s)
 {
 	ShapeVal = s;
 	Tile = BaseTile;
@@ -81,7 +81,7 @@ void tetromino::Update(SDL_Point p, shape s)
 	}
 }
 
-void tetromino::Update(SDL_Point p)
+void Tetromino::update(SDL_Point p)
 {
 	int x1 = p.x, y1 = p.y;
 	x1 -= Center.x;
@@ -94,7 +94,7 @@ void tetromino::Update(SDL_Point p)
 	Center = p;
 }
 
-void tetromino::Rotate()
+void Tetromino::rotate()
 {
 	if (ShapeVal != O_Shape)
 	{
@@ -118,19 +118,19 @@ void tetromino::Rotate()
 	}
 }
 
-void tetromino::Render()
+void Tetromino::render()
 {
 	for (int i = 0; i <= 3; i++)
 		SDL_RenderCopy(renderer, Tile, NULL, &Blocks[i]);
 }
 
-void tetromino::GetBlocks(SDL_Rect *Arr)
+void Tetromino::getBlocks(SDL_Rect Arr[4])
 {
 	for (int i = 0; i <= 3; i++)
-		*(Arr + i) = Blocks[i];
+		Arr[i] = Blocks[i];
 }
 
-shape tetromino::random()
+shape Tetromino::random()
 {
 	srand(time(0));
 	int i = rand() % 8;
@@ -150,7 +150,7 @@ shape tetromino::random()
 		return Z_Shape;
 }
 
-tetromino::~tetromino()
+Tetromino::~Tetromino()
 {
 	SDL_DestroyTexture(Tile);
 	Tile = NULL;

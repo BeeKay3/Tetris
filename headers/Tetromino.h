@@ -13,16 +13,16 @@ enum shape
 	Z_Shape
 };
 
-class tetromino
+class Tetromino
 {
 public:
-	tetromino(SDL_Renderer *Renderer, int b, SDL_Texture *Base);
-	~tetromino();
-	void Update(SDL_Point p, shape s);
-	void Update(SDL_Point p);
-	void Render();
-	void Rotate();
-	void GetBlocks(SDL_Rect *Arr);
+	Tetromino(SDL_Renderer *Renderer, int b, SDL_Texture *Base);
+	~Tetromino();
+	void update(SDL_Point p, shape s);
+	void update(SDL_Point p);
+	void render();
+	void rotate();
+	void getBlocks(SDL_Rect Arr[4]);
 	shape random();
 
 private:

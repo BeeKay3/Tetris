@@ -6,6 +6,7 @@
 #include <string>
 #include "../headers/board.h"
 #include "../headers/GetTexture.h"
+#include "../headers/Tetromino.h"
 
 const int VERTICALSHIFT = 40, HORIZONTALSHIFT = 710;
 int boardWidth, boardHeight;
@@ -107,4 +108,14 @@ void Board::update()
         }
         log << std::endl;
     }
+}
+
+bool Board::collisionGround(SDL_Rect piece[4])
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (piece[i].y >= 990)
+            return true;
+    }
+    return false;
 }

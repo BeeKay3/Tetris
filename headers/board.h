@@ -14,4 +14,5 @@ public:
     Board(SDL_Renderer *Renderer, int BLOCKSIZE);
     ~Board();
     void update();
+    bool collisionGround(SDL_Rect piece[4]);
 };
