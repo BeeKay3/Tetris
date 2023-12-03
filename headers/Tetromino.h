@@ -16,13 +16,14 @@ enum shape
 class tetromino
 {
 public:
-	tetromino(int b, SDL_Texture *Base);
+	tetromino(SDL_Renderer *Renderer, int b, SDL_Texture *Base);
 	~tetromino();
 	void Update(SDL_Point p, shape s);
 	void Update(SDL_Point p);
-	void Render(SDL_Renderer *Renderer);
+	void Render();
 	void Rotate();
 	void GetBlocks(SDL_Rect *Arr);
+	shape random();
 
 private:
 	shape ShapeVal;
@@ -31,5 +32,5 @@ private:
 	SDL_Point Center;
 	SDL_Texture *Tile;
 	SDL_Texture *BaseTile;
+	SDL_Renderer *renderer;
 };
-

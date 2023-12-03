@@ -50,7 +50,6 @@ Board::Board(SDL_Renderer *Renderer, int BLOCKSIZE)
     background = {HORIZONTALSHIFT, VERTICALSHIFT, boardWidth, boardHeight};
     renderer = Renderer;
     baseTile = GetTexture(renderer, "./assets/img/block.png");
-    update();
 }
 
 Board::~Board()
@@ -74,10 +73,9 @@ void Board::update()
                     SDL_SetTextureColorMod(baseTile, 60, 248, 251);
                     SDL_RenderCopy(renderer, baseTile, NULL, &visibleGrid[i][j]);
                 }
-                //! needs to be updated
                 else if (valueGrid[i][j] == 2)
                 {
-                    SDL_SetTextureColorMod(baseTile, 255, 248, 0);
+                    SDL_SetTextureColorMod(baseTile, 255, 204, 0);
                     SDL_RenderCopy(renderer, baseTile, NULL, &visibleGrid[i][j]);
                 }
                 else if (valueGrid[i][j] == 3)
@@ -109,5 +107,4 @@ void Board::update()
         }
         log << std::endl;
     }
-    SDL_RenderPresent(renderer);
 }
