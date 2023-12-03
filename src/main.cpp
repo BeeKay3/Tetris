@@ -84,11 +84,16 @@ int main(int argc, char *args[])
 				{
 					t.rotate();
 				}
+				else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_c)
+				{
+					t.update(INITIAL_POS, t.random());
+					pos = INITIAL_POS;
+				}
 			if (SDL_GetTicks64() - currentTicks >= 500)
 			{
 				currentTicks = SDL_GetTicks64();
 				t.getBlocks(currentTetromino);
-				pos.y += 50;
+				pos.y += BLOCKSIZE;
 				if (b.collisionGround(currentTetromino))
 				{
 					t.update(INITIAL_POS, t.random());
