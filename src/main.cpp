@@ -76,20 +76,33 @@ int main(int argc, char *args[])
 
 		while (quit == false)
 		{
-			while (SDL_PollEvent(&e))
-				if (e.type == SDL_QUIT)
-					quit = true;
-				else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE)
-				{
-					t.rotate();
-				}
-				else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_c)
-				{
-					t.update(INITIAL_POS, t.random());
-					pos = INITIAL_POS;
-				}
 			if (SDL_GetTicks64() - currentTicks >= 500)
 			{
+				while (SDL_PollEvent(&e))
+				{
+					if (e.type == SDL_QUIT)
+						quit = true;
+					else if (e.type == SDL_KEYDOWN)
+					{
+						if (e.key.keysym.sym == SDLK_z)
+						{
+							t.rotate();
+						}
+						else if (e.key.keysym.sym == SDLK_SPACE)
+						{
+							t.update(INITIAL_POS, t.random());
+							pos = INITIAL_POS;
+						}
+						else if (e.key.keysym.sym == SDLK_LEFT)
+						{
+							pos.x -= 50;
+						}
+						else if (e.key.keysym.sym == SDLK_RIGHT)
+						{
+							pos.x += 50;
+						}
+					}
+				}
 				currentTicks = SDL_GetTicks64();
 				t.getBlocks(currentTetromino);
 				pos.y += BLOCKSIZE;
