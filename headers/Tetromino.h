@@ -23,6 +23,7 @@ public:
 	void render();
 	void rotate();
 	void getBlocks(SDL_Rect Arr[4]);
+	shape getShape();
 	shape random();
 
 private:

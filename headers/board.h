@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include "../headers/Tetromino.h"
 
 class Board
 {
@@ -14,5 +15,7 @@ public:
     Board(SDL_Renderer *Renderer, int BLOCKSIZE);
     ~Board();
     void update();
+    void updateLog();
     bool collisionGround(SDL_Rect piece[4]);
+    void insert(SDL_Rect piece[4], shape color);
 };

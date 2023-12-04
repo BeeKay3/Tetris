@@ -25,7 +25,6 @@ void Tetromino::update(SDL_Point p, shape s)
 		Blocks[3] = {Center.x, Center.y + BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 255, 204, 0);
 	}
-
 	else if (ShapeVal == T_Shape)
 	{
 		Center.y += BLOCKSIZE;
@@ -35,7 +34,6 @@ void Tetromino::update(SDL_Point p, shape s)
 		Blocks[3] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 231, 9, 212);
 	}
-
 	else if (ShapeVal == J_Shape)
 	{
 		Center.y += BLOCKSIZE;
@@ -46,7 +44,6 @@ void Tetromino::update(SDL_Point p, shape s)
 		Blocks[3] = {Center.x - BLOCKSIZE, Center.y - BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 7, 106, 182);
 	}
-
 	else if (ShapeVal == L_Shape)
 	{
 		Center.y += BLOCKSIZE;
@@ -57,7 +54,6 @@ void Tetromino::update(SDL_Point p, shape s)
 		Blocks[3] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 236, 159, 5);
 	}
-
 	else if (ShapeVal == S_Shape)
 	{
 		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
@@ -66,7 +62,6 @@ void Tetromino::update(SDL_Point p, shape s)
 		Blocks[3] = {Center.x - BLOCKSIZE, Center.y + BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 168, 233, 28);
 	}
-
 	else if (ShapeVal == Z_Shape)
 	{
 		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
@@ -75,7 +70,6 @@ void Tetromino::update(SDL_Point p, shape s)
 		Blocks[3] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 246, 3, 3);
 	}
-
 	else if (ShapeVal == I_Shape)
 	{
 		Blocks[0] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
@@ -153,6 +147,11 @@ shape Tetromino::random()
 		return S_Shape;
 	else
 		return Z_Shape;
+}
+
+shape Tetromino::getShape()
+{
+	return ShapeVal;
 }
 
 Tetromino::~Tetromino()

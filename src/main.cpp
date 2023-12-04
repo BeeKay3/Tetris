@@ -59,7 +59,6 @@ int main(int argc, char *args[])
 {
 	if (INIT())
 	{
-
 		SDL_Event e;
 		bool quit = false;
 		Uint64 currentTicks;
@@ -96,6 +95,8 @@ int main(int argc, char *args[])
 				pos.y += BLOCKSIZE;
 				if (b.collisionGround(currentTetromino))
 				{
+					b.insert(currentTetromino, t.getShape());
+					b.updateLog();
 					t.update(INITIAL_POS, t.random());
 					pos = INITIAL_POS;
 				}
@@ -103,12 +104,12 @@ int main(int argc, char *args[])
 				{
 					t.update(pos);
 				}
+				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+				SDL_RenderClear(renderer);
+				b.update();
+				t.render();
+				SDL_RenderPresent(renderer);
 			}
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-			SDL_RenderClear(renderer);
-			b.update();
-			t.render();
-			SDL_RenderPresent(renderer);
 		}
 		CLOSE();
 		return 0;

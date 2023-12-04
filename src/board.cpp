@@ -66,7 +66,6 @@ void Board::update()
     {
         for (int j = 0; j < 10; j++)
         {
-            log << valueGrid[i][j] << " ";
             if (valueGrid[i][j] != 0)
             {
                 if (valueGrid[i][j] == 1)
@@ -106,6 +105,18 @@ void Board::update()
                 }
             }
         }
+    }
+}
+
+void Board::updateLog()
+{
+    log << std::endl;
+    for (int i = 0; i < 20; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            log << valueGrid[i][j] << " ";
+        }
         log << std::endl;
     }
 }
@@ -118,4 +129,14 @@ bool Board::collisionGround(SDL_Rect piece[4])
             return true;
     }
     return false;
+}
+
+void Board::insert(SDL_Rect piece[4], shape color)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        size_t x = (piece[i].x - 710) / 50;
+        size_t y = (piece[i].y - 40) / 50;
+        valueGrid[y][x] = color + 1;
+    }
 }
