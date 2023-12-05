@@ -18,8 +18,8 @@ class Tetromino
 public:
 	Tetromino(SDL_Renderer *Renderer, int b, SDL_Texture *Base);
 	~Tetromino();
-	void update(SDL_Point p, shape s);
-	void update(SDL_Point p);
+	void update(SDL_Point p, shape s, SDL_Rect piece[4]);
+	void update(SDL_Point p, SDL_Rect piece[4]);
 	void render();
 	void rotate();
 	void getBlocks(SDL_Rect Arr[4]);

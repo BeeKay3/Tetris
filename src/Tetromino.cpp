@@ -12,7 +12,7 @@ Tetromino::Tetromino(SDL_Renderer *Renderer, int b, SDL_Texture *Base)
 	renderer = Renderer;
 }
 
-void Tetromino::update(SDL_Point p, shape s)
+void Tetromino::update(SDL_Point p, shape s, SDL_Rect piece[4])
 {
 	ShapeVal = s;
 	Tile = BaseTile;
@@ -76,9 +76,11 @@ void Tetromino::update(SDL_Point p, shape s)
 		Blocks[3] = {Center.x - (2 * BLOCKSIZE), Center.y, BLOCKSIZE, BLOCKSIZE};
 		SDL_SetTextureColorMod(Tile, 60, 248, 251);
 	}
+
+	getBlocks(piece);
 }
 
-void Tetromino::update(SDL_Point p)
+void Tetromino::update(SDL_Point p, SDL_Rect piece[4])
 {
 	int x1 = p.x, y1 = p.y;
 	x1 -= Center.x;
@@ -89,6 +91,8 @@ void Tetromino::update(SDL_Point p)
 		Blocks[i].y += y1;
 	}
 	Center = p;
+
+	getBlocks(piece);
 }
 
 void Tetromino::rotate()

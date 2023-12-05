@@ -72,11 +72,10 @@ int main(int argc, char *args[])
 
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderClear(renderer);
-		t.update(pos, t.random());
+		t.update(pos, t.random(), currentTetromino);
 
 		while (quit == false)
 		{
-			t.getBlocks(currentTetromino);
 			while (SDL_PollEvent(&e))
 			{
 				if (e.type == SDL_QUIT)
@@ -86,11 +85,10 @@ int main(int argc, char *args[])
 					if (e.key.keysym.sym == SDLK_SPACE)
 					{
 						t.rotate();
-						t.render();
 					}
 					else if (e.key.keysym.sym == SDLK_z)
 					{
-						t.update(INITIAL_POS, t.random());
+						t.update(INITIAL_POS, t.random(), currentTetromino);
 						pos = INITIAL_POS;
 					}
 					else if (e.key.keysym.sym == SDLK_LEFT)
@@ -98,8 +96,7 @@ int main(int argc, char *args[])
 						if (!b.outOfLeftBounds(currentTetromino))
 						{
 							pos.x -= 50;
-							t.update(pos);
-							t.render();
+							t.update(pos, currentTetromino);
 						}
 					}
 					else if (e.key.keysym.sym == SDLK_RIGHT)
@@ -107,8 +104,7 @@ int main(int argc, char *args[])
 						if (!b.outOfRightBounds(currentTetromino))
 						{
 							pos.x += 50;
-							t.update(pos);
-							t.render();
+							t.update(pos, currentTetromino);
 						}
 					}
 				}
@@ -117,18 +113,29 @@ int main(int argc, char *args[])
 			{
 				currentTicks = SDL_GetTicks64();
 				pos.y += BLOCKSIZE;
+				t.update(pos, currentTetromino);
 
-				if (b.collisionGround(currentTetromino))
+				if (b.collisionBlocks(currentTetromino))
+				{
+					pos.y -= BLOCKSIZE;
+					t.update(pos, currentTetromino);
+					b.insert(currentTetromino, t.getShape());
+					b.updateLog();
+					t.update(INITIAL_POS, t.random(), currentTetromino);
+					pos = INITIAL_POS;
+				}
+				else if (b.collisionGround(currentTetromino))
 				{
 					b.insert(currentTetromino, t.getShape());
 					b.updateLog();
-					t.update(INITIAL_POS, t.random());
+					t.update(INITIAL_POS, t.random(), currentTetromino);
 					pos = INITIAL_POS;
 				}
 				else
 				{
-					t.update(pos);
+					t.update(pos, currentTetromino);
 				}
+
 				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 				SDL_RenderClear(renderer);
 				b.update();

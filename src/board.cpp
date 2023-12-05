@@ -155,8 +155,17 @@ bool Board::outOfRightBounds(SDL_Rect piece[4])
     return false;
 }
 
-bool Board::collisionBlocks(SDL_Rect piece[4]) 
+bool Board::collisionBlocks(SDL_Rect piece[4])
 {
+    for (int i = 0; i < 4; i++)
+    {
+        size_t x = (piece[i].x - 710) / 50;
+        size_t y = (piece[i].y - 40) / 50;
+        if (valueGrid[y][x] != 0)
+        {
+            return true;
+        }
+    }
     return false;
 }
 
