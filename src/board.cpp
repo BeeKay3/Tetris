@@ -131,6 +131,35 @@ bool Board::collisionGround(SDL_Rect piece[4])
     return false;
 }
 
+bool Board::outOfLeftBounds(SDL_Rect piece[4])
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (piece[i].x <= 710)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Board::outOfRightBounds(SDL_Rect piece[4])
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (piece[i].x >= 1160)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Board::collisionBlocks(SDL_Rect piece[4]) 
+{
+    return false;
+}
+
 void Board::insert(SDL_Rect piece[4], shape color)
 {
     for (int i = 0; i < 4; i++)

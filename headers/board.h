@@ -17,5 +17,8 @@ public:
     void update();
     void updateLog();
     bool collisionGround(SDL_Rect piece[4]);
+    bool outOfLeftBounds(SDL_Rect piece[4]);
+    bool outOfRightBounds(SDL_Rect piece[4]);
+    bool collisionBlocks(SDL_Rect piece[4]);
     void insert(SDL_Rect piece[4], shape color);
 };

@@ -76,36 +76,48 @@ int main(int argc, char *args[])
 
 		while (quit == false)
 		{
-			if (SDL_GetTicks64() - currentTicks >= 500)
+			t.getBlocks(currentTetromino);
+			while (SDL_PollEvent(&e))
 			{
-				while (SDL_PollEvent(&e))
+				if (e.type == SDL_QUIT)
+					quit = true;
+				else if (e.type == SDL_KEYDOWN)
 				{
-					if (e.type == SDL_QUIT)
-						quit = true;
-					else if (e.type == SDL_KEYDOWN)
+					if (e.key.keysym.sym == SDLK_SPACE)
 					{
-						if (e.key.keysym.sym == SDLK_z)
-						{
-							t.rotate();
-						}
-						else if (e.key.keysym.sym == SDLK_SPACE)
-						{
-							t.update(INITIAL_POS, t.random());
-							pos = INITIAL_POS;
-						}
-						else if (e.key.keysym.sym == SDLK_LEFT)
+						t.rotate();
+						t.render();
+					}
+					else if (e.key.keysym.sym == SDLK_z)
+					{
+						t.update(INITIAL_POS, t.random());
+						pos = INITIAL_POS;
+					}
+					else if (e.key.keysym.sym == SDLK_LEFT)
+					{
+						if (!b.outOfLeftBounds(currentTetromino))
 						{
 							pos.x -= 50;
+							t.update(pos);
+							t.render();
 						}
-						else if (e.key.keysym.sym == SDLK_RIGHT)
+					}
+					else if (e.key.keysym.sym == SDLK_RIGHT)
+					{
+						if (!b.outOfRightBounds(currentTetromino))
 						{
 							pos.x += 50;
+							t.update(pos);
+							t.render();
 						}
 					}
 				}
+			}
+			if (SDL_GetTicks64() - currentTicks >= 1000)
+			{
 				currentTicks = SDL_GetTicks64();
-				t.getBlocks(currentTetromino);
 				pos.y += BLOCKSIZE;
+
 				if (b.collisionGround(currentTetromino))
 				{
 					b.insert(currentTetromino, t.getShape());
@@ -125,7 +137,6 @@ int main(int argc, char *args[])
 			}
 		}
 		CLOSE();
-		return 0;
 	}
 	return 0;
 }

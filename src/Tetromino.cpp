@@ -38,7 +38,6 @@ void Tetromino::update(SDL_Point p, shape s)
 	{
 		Center.y += BLOCKSIZE;
 		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
-		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[1] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[2] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[3] = {Center.x - BLOCKSIZE, Center.y - BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
@@ -47,7 +46,6 @@ void Tetromino::update(SDL_Point p, shape s)
 	else if (ShapeVal == L_Shape)
 	{
 		Center.y += BLOCKSIZE;
-		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[1] = {Center.x + BLOCKSIZE, Center.y - BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
 		Blocks[2] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
@@ -95,6 +93,10 @@ void Tetromino::update(SDL_Point p)
 
 void Tetromino::rotate()
 {
+	if (Center.x <= 710 || Center.x >= 1210)
+	{
+		return;
+	}
 	if (ShapeVal != O_Shape)
 	{
 		SDL_Point RotationCenter = Center;
