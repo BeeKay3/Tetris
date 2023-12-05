@@ -12,13 +12,13 @@ const int SCREENWIDTH = 1920, SCREENHEIGHT = 1080, BLOCKSIZE = 50, INITIAL_X = 9
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 
-bool INIT()
+bool init()
 {
-	bool Key = true;
+	bool key = true;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		cout << "SDL could not be initialized, error : " << SDL_GetError() << endl;
-		Key = false;
+		key = false;
 	}
 	else
 	{
@@ -26,7 +26,7 @@ bool INIT()
 		if (window == NULL)
 		{
 			cout << "Window could not be created, error : " << SDL_GetError() << endl;
-			Key = false;
+			key = false;
 		}
 		else
 		{
@@ -34,19 +34,19 @@ bool INIT()
 			if (renderer == NULL)
 			{
 				cout << "Renderer could not be intialized, error : " << SDL_GetError() << endl;
-				Key = false;
+				key = false;
 			}
 			if (!IMG_Init(IMG_INIT_PNG))
 			{
 				cout << "SDL_image could not be intialized, error : " << IMG_GetError() << endl;
-				Key = false;
+				key = false;
 			}
 		}
 	}
-	return Key;
+	return key;
 }
 
-void CLOSE()
+void close()
 {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -57,7 +57,7 @@ void CLOSE()
 
 int main(int argc, char *args[])
 {
-	if (!INIT())
+	if (!init())
 		return 1;
 
 	SDL_Event e;
@@ -71,12 +71,16 @@ int main(int argc, char *args[])
 	Board b(renderer, BLOCKSIZE);
 	Tetromino t(renderer, BLOCKSIZE, BASETILE);
 
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_RenderClear(renderer);
 	t.update(pos, t.random(), currentTetromino);
 
 	while (quit == false)
 	{
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_RenderClear(renderer);
+		b.update();
+		t.render();
+		SDL_RenderPresent(renderer);
+
 		while (SDL_PollEvent(&e))
 		{
 			if (e.type == SDL_QUIT)
@@ -110,6 +114,7 @@ int main(int argc, char *args[])
 				}
 			}
 		}
+
 		if (SDL_GetTicks64() - currentTicks >= 1000)
 		{
 			currentTicks = SDL_GetTicks64();
@@ -136,14 +141,8 @@ int main(int argc, char *args[])
 			{
 				t.update(pos, currentTetromino);
 			}
-
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-			SDL_RenderClear(renderer);
-			b.update();
-			t.render();
-			SDL_RenderPresent(renderer);
 		}
 	}
-	CLOSE();
+	close();
 	return 0;
 }
