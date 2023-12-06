@@ -203,6 +203,5 @@ int Board::lineClear()
             i++;
         }
     }
-    std::cout << num << " lines cleard" << std::endl;
     return num;
 }
