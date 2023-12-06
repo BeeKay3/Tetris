@@ -21,7 +21,7 @@ public:
 	void update(SDL_Point p, shape s, SDL_Rect piece[4]);
 	void update(SDL_Point p, SDL_Rect piece[4]);
 	void render();
-	void rotate();
+	void rotate(SDL_Rect piece[4]);
 	void getBlocks(SDL_Rect Arr[4]);
 	shape getShape();
 	shape random();

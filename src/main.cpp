@@ -83,7 +83,13 @@ int main(int argc, char *args[])
 			{
 				if (e.key.keysym.sym == SDLK_SPACE)
 				{
-					t.rotate();
+					t.rotate(currentTetromino);
+					if (b.collisionBlocks(currentTetromino))
+					{
+						t.rotate(currentTetromino);
+						t.rotate(currentTetromino);
+						t.rotate(currentTetromino);
+					}
 				}
 				else if (e.key.keysym.sym == SDLK_z)
 				{

@@ -95,7 +95,7 @@ void Tetromino::update(SDL_Point p, SDL_Rect piece[4])
 	getBlocks(piece);
 }
 
-void Tetromino::rotate()
+void Tetromino::rotate(SDL_Rect piece[4])
 {
 	if (Center.x <= 710 || Center.x >= 1210)
 	{
@@ -128,6 +128,8 @@ void Tetromino::rotate()
 			Blocks[i].y += RotationCenter.y;
 		}
 	}
+
+	getBlocks(piece);
 }
 
 void Tetromino::render()
