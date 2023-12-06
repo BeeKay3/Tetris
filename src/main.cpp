@@ -73,14 +73,8 @@ int main(int argc, char *args[])
 
 	t.update(pos, t.random(), currentTetromino);
 
-	while (quit == false)
+	while (!quit)
 	{
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_RenderClear(renderer);
-		b.update();
-		t.render();
-		SDL_RenderPresent(renderer);
-
 		while (SDL_PollEvent(&e))
 		{
 			if (e.type == SDL_QUIT)
@@ -171,6 +165,12 @@ int main(int argc, char *args[])
 			}
 		}
 
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_RenderClear(renderer);
+		b.update();
+		t.render();
+		SDL_RenderPresent(renderer);
+
 		if (SDL_GetTicks64() - currentTicks >= 1000)
 		{
 			currentTicks = SDL_GetTicks64();
@@ -194,10 +194,6 @@ int main(int argc, char *args[])
 				b.updateLog();
 				t.update(INITIAL_POS, t.random(), currentTetromino);
 				pos = INITIAL_POS;
-			}
-			else
-			{
-				t.update(pos, currentTetromino);
 			}
 		}
 	}
