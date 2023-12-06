@@ -178,3 +178,31 @@ void Board::insert(SDL_Rect piece[4], shape color)
         valueGrid[y][x] = color + 1;
     }
 }
+
+int Board::lineClear()
+{
+    int num = 0;
+    for (int i = 19; i > 0; i--)
+    {
+        if (valueGrid[i][0] != 0 && valueGrid[i][1] != 0 && valueGrid[i][2] != 0 && valueGrid[i][3] != 0 && valueGrid[i][4] != 0 && valueGrid[i][5] != 0 && valueGrid[i][6] != 0 && valueGrid[i][7] != 0 && valueGrid[i][8] != 0 && valueGrid[i][9] != 0)
+        {
+            if (num == 0)
+            {
+                update();
+                SDL_RenderPresent(renderer);
+                SDL_Delay(200);
+            }
+            num++;
+            for (int k = i; k > 0; k--)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    valueGrid[k][j] = valueGrid[k - 1][j];
+                }
+            }
+            i++;
+        }
+    }
+    std::cout << num << " lines cleard" << std::endl;
+    return num;
+}

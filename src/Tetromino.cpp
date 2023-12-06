@@ -101,6 +101,13 @@ void Tetromino::rotate()
 	{
 		return;
 	}
+	if (ShapeVal == I_Shape)
+	{
+		if (Center.y <= 90 || Center.x <= 760 || Center.x >= 1140)
+		{
+			return;
+		}
+	}
 	if (ShapeVal != O_Shape)
 	{
 		SDL_Point RotationCenter = Center;

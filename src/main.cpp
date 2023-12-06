@@ -102,6 +102,11 @@ int main(int argc, char *args[])
 					{
 						pos.x -= 50;
 						t.update(pos, currentTetromino);
+						if (b.collisionBlocks(currentTetromino))
+						{
+							pos.x += 50;
+							t.update(pos, currentTetromino);
+						}
 					}
 				}
 				else if (e.key.keysym.sym == SDLK_RIGHT)
@@ -110,6 +115,11 @@ int main(int argc, char *args[])
 					{
 						pos.x += 50;
 						t.update(pos, currentTetromino);
+						if (b.collisionBlocks(currentTetromino))
+						{
+							pos.x -= 50;
+							t.update(pos, currentTetromino);
+						}
 					}
 				}
 				else if (e.key.keysym.sym == SDLK_DOWN)
@@ -122,6 +132,7 @@ int main(int argc, char *args[])
 						pos.y -= BLOCKSIZE;
 						t.update(pos, currentTetromino);
 						b.insert(currentTetromino, t.getShape());
+						b.lineClear();
 						b.updateLog();
 						t.update(INITIAL_POS, t.random(), currentTetromino);
 						pos = INITIAL_POS;
@@ -140,6 +151,7 @@ int main(int argc, char *args[])
 							pos.y -= BLOCKSIZE;
 							t.update(pos, currentTetromino);
 							b.insert(currentTetromino, t.getShape());
+							b.lineClear();
 							b.updateLog();
 							t.update(INITIAL_POS, t.random(), currentTetromino);
 							pos = INITIAL_POS;
@@ -148,6 +160,7 @@ int main(int argc, char *args[])
 						else if (b.collisionGround(currentTetromino))
 						{
 							b.insert(currentTetromino, t.getShape());
+							b.lineClear();
 							b.updateLog();
 							t.update(INITIAL_POS, t.random(), currentTetromino);
 							pos = INITIAL_POS;
@@ -169,6 +182,7 @@ int main(int argc, char *args[])
 				pos.y -= BLOCKSIZE;
 				t.update(pos, currentTetromino);
 				b.insert(currentTetromino, t.getShape());
+				b.lineClear();
 				b.updateLog();
 				t.update(INITIAL_POS, t.random(), currentTetromino);
 				pos = INITIAL_POS;
@@ -176,6 +190,7 @@ int main(int argc, char *args[])
 			else if (b.collisionGround(currentTetromino))
 			{
 				b.insert(currentTetromino, t.getShape());
+				b.lineClear();
 				b.updateLog();
 				t.update(INITIAL_POS, t.random(), currentTetromino);
 				pos = INITIAL_POS;

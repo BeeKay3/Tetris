@@ -21,4 +21,5 @@ public:
     bool outOfRightBounds(SDL_Rect piece[4]);
     bool collisionBlocks(SDL_Rect piece[4]);
     void insert(SDL_Rect piece[4], shape color);
+    int lineClear();
 };
