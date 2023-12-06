@@ -112,6 +112,49 @@ int main(int argc, char *args[])
 						t.update(pos, currentTetromino);
 					}
 				}
+				else if (e.key.keysym.sym == SDLK_DOWN)
+				{
+					pos.y += BLOCKSIZE;
+					t.update(pos, currentTetromino);
+
+					if (b.collisionBlocks(currentTetromino))
+					{
+						pos.y -= BLOCKSIZE;
+						t.update(pos, currentTetromino);
+						b.insert(currentTetromino, t.getShape());
+						b.updateLog();
+						t.update(INITIAL_POS, t.random(), currentTetromino);
+						pos = INITIAL_POS;
+					}
+				}
+				else if (e.key.keysym.sym == SDLK_UP)
+				{
+					bool drop = true;
+					while (drop)
+					{
+						pos.y += BLOCKSIZE;
+						t.update(pos, currentTetromino);
+
+						if (b.collisionBlocks(currentTetromino))
+						{
+							pos.y -= BLOCKSIZE;
+							t.update(pos, currentTetromino);
+							b.insert(currentTetromino, t.getShape());
+							b.updateLog();
+							t.update(INITIAL_POS, t.random(), currentTetromino);
+							pos = INITIAL_POS;
+							drop = false;
+						}
+						else if (b.collisionGround(currentTetromino))
+						{
+							b.insert(currentTetromino, t.getShape());
+							b.updateLog();
+							t.update(INITIAL_POS, t.random(), currentTetromino);
+							pos = INITIAL_POS;
+							drop = false;
+						}
+					}
+				}
 			}
 		}
 
