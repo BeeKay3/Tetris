@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <string>
 #include "../headers/GetTexture.h"
@@ -39,6 +40,11 @@ bool init()
 			if (!IMG_Init(IMG_INIT_PNG))
 			{
 				cout << "SDL_image could not be intialized, error : " << IMG_GetError() << endl;
+				key = false;
+			}
+			if (TTF_Init() < 0)
+			{
+				cout << "SDL_TTF not initialized, error: " << TTF_GetError() << endl;
 				key = false;
 			}
 		}
@@ -131,7 +137,7 @@ int main(int argc, char *args[])
 					{
 						pos.y -= BLOCKSIZE;
 						t.update(pos, currentTetromino);
-						b.insert(currentTetromino, t.getShape());
+						b.insert(currentTetromino, t.getShape(), &quit);
 						b.lineClear();
 						b.updateLog();
 						t.update(INITIAL_POS, t.random(), currentTetromino);
@@ -150,7 +156,7 @@ int main(int argc, char *args[])
 						{
 							pos.y -= BLOCKSIZE;
 							t.update(pos, currentTetromino);
-							b.insert(currentTetromino, t.getShape());
+							b.insert(currentTetromino, t.getShape(), &quit);
 							b.lineClear();
 							b.updateLog();
 							t.update(INITIAL_POS, t.random(), currentTetromino);
@@ -159,7 +165,7 @@ int main(int argc, char *args[])
 						}
 						else if (b.collisionGround(currentTetromino))
 						{
-							b.insert(currentTetromino, t.getShape());
+							b.insert(currentTetromino, t.getShape(), &quit);
 							b.lineClear();
 							b.updateLog();
 							t.update(INITIAL_POS, t.random(), currentTetromino);
@@ -187,7 +193,7 @@ int main(int argc, char *args[])
 			{
 				pos.y -= BLOCKSIZE;
 				t.update(pos, currentTetromino);
-				b.insert(currentTetromino, t.getShape());
+				b.insert(currentTetromino, t.getShape(), &quit);
 				b.lineClear();
 				b.updateLog();
 				t.update(INITIAL_POS, t.random(), currentTetromino);
@@ -195,12 +201,28 @@ int main(int argc, char *args[])
 			}
 			else if (b.collisionGround(currentTetromino))
 			{
-				b.insert(currentTetromino, t.getShape());
+				b.insert(currentTetromino, t.getShape(), &quit);
 				b.lineClear();
 				b.updateLog();
 				t.update(INITIAL_POS, t.random(), currentTetromino);
 				pos = INITIAL_POS;
 			}
+		}
+
+		if (quit == true)
+		{
+			TTF_Font *roboto;
+			roboto = TTF_OpenFont("Roboto-Regular.ttf", 80);
+			SDL_Surface *death_text = TTF_RenderText_Blended(roboto, "You Dead! :P", {255, 83, 112, 255});
+			SDL_Texture *death_msg = SDL_CreateTextureFromSurface(renderer, death_text);
+			SDL_Rect death_rect = {710, 300, death_text->w, death_text->h};
+			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+			SDL_RenderClear(renderer);
+			SDL_RenderCopy(renderer, death_msg, NULL, &death_rect);
+			SDL_RenderPresent(renderer);
+			SDL_Delay(3000);
+			SDL_FreeSurface(death_text);
+			SDL_DestroyTexture(death_msg);
 		}
 	}
 	close();

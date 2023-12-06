@@ -20,6 +20,6 @@ public:
     bool outOfLeftBounds(SDL_Rect piece[4]);
     bool outOfRightBounds(SDL_Rect piece[4]);
     bool collisionBlocks(SDL_Rect piece[4]);
-    void insert(SDL_Rect piece[4], shape color);
+    void insert(SDL_Rect piece[4], shape color, bool *dead);
     int lineClear();
 };

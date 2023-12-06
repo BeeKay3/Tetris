@@ -169,10 +169,14 @@ bool Board::collisionBlocks(SDL_Rect piece[4])
     return false;
 }
 
-void Board::insert(SDL_Rect piece[4], shape color)
+void Board::insert(SDL_Rect piece[4], shape color, bool *dead)
 {
     for (int i = 0; i < 4; i++)
     {
+        if (piece[i].y <= 40)
+        {
+            *dead = true;
+        }
         size_t x = (piece[i].x - 710) / 50;
         size_t y = (piece[i].y - 40) / 50;
         valueGrid[y][x] = color + 1;
