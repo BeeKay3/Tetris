@@ -1,4 +1,0 @@
-*.exe
-/game_states/*.txt
-
-!/game_states/initial_state.txt
