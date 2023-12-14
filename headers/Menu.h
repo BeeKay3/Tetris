@@ -7,9 +7,10 @@ class Menu
 {
 public:
 	void mainMenu(SDL_Renderer *Renderer);
+	void credits(SDL_Renderer *Renderer);
 	Menu();
 	~Menu();
 private:
-	TTF_Font *textFont;
+	TTF_Font *textFont, *writeFont;
 	SDL_Color textColor;
 };
