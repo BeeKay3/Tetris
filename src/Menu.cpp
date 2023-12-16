@@ -18,7 +18,7 @@ void Menu::mainMenu(SDL_Renderer *Renderer)
 	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
 	SDL_Rect buttonBox[3], textBox[3];
 	SDL_Texture *gameText, *helpText, *quitText;
-	
+
 	SDL_Texture *splash = GetTexture(Renderer, "assets/img/splash.png");
 	SDL_SetTextureBlendMode(splash, SDL_BLENDMODE_BLEND);
 	SDL_Texture *button = GetTexture(Renderer, "assets/img/rect.png");
@@ -51,6 +51,8 @@ void Menu::mainMenu(SDL_Renderer *Renderer)
 		SDL_RenderCopy(Renderer, splash, NULL, NULL);
 		SDL_RenderPresent(Renderer);
 	}
+
+	frameTime = SDL_GetTicks64();
 	while(!aKey)
 	{
 		SDL_RenderClear(Renderer);
@@ -73,8 +75,9 @@ void Menu::mainMenu(SDL_Renderer *Renderer)
 			}
 			if (buttonBox[2].x < 1400)
 				aKey = true;
+			frameTime = SDL_GetTicks64();
 		}
-		
+
 		SDL_RenderCopy(Renderer, splash, NULL, NULL);
 		for (int i = 0; i <= 2; i++)
 			SDL_RenderCopy(Renderer, button, NULL, &buttonBox[i]);
@@ -89,34 +92,34 @@ void Menu::mainMenu(SDL_Renderer *Renderer)
 void Menu::credits(SDL_Renderer *Renderer)
 {
 	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
-	SDL_Rect textBox[6];
-	SDL_Texture *Credits[6];
-	std::string creditText[6] = {"Developed By", "Aryan Shakya", "Bikalpa Khachhibhoya", "Sujal Bajracharya", "With Assistance From", "Rojina Shakya"};
+	SDL_Rect textBox[9];
+	SDL_Texture *Credits[9];
+	std::string creditText[9] = {"Developed By", "Kathmandu University, B.tech in AI, 1st Year Students",  "Aryan Shakya", "Bikalpa Khachhibhoya", "Sujal Bajracharya", " ", "With Assistance From", "Kathmandu University, Department of Computer Science & Engineering, Lecturer", "Mrs. Rojina Shakya"};
 	int alphaVal = 0;
-	for (int i = 0; i <= 5; i++)
+	for (int i = 0; i <= 8; i++)
 	{
 		Credits[i] = GetTexture(Renderer, writeFont, creditText[i], textColor, &textBox[i]);
 		SDL_SetTextureAlphaMod(Credits[i], alphaVal);
 		textBox[i].x = 960 - (textBox[i].w / 2);
 		textBox[i].y = 300 + i * 60;
 	}
-	
+
 	Uint64 frameTime = SDL_GetTicks64();
 	bool aKey = false, bKey = false;;
 	while(!aKey)
 	{
 		SDL_RenderClear(Renderer);
-		if (SDL_GetTicks64() - frameTime > 35)
+		if (SDL_GetTicks64() - frameTime > 15)
 		{
 			if(bKey)
-				alphaVal -= 5;
+				alphaVal -= 1;
 			else if (!bKey && alphaVal != 255)
-				alphaVal += 5;
-			for (int j = 0; j <= 5; j++)
+				alphaVal += 1;
+			for (int j = 0; j <= 8; j++)
 				SDL_SetTextureAlphaMod(Credits[j], alphaVal);
 			frameTime = SDL_GetTicks64();
 		}
-		for (int i = 0; i <= 5; i++)
+		for (int i = 0; i <= 8; i++)
 			SDL_RenderCopy(Renderer, Credits[i], NULL, &textBox[i]);
 		if(alphaVal < 0)
 			break;
