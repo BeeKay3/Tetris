@@ -13,7 +13,7 @@ Menu::Menu()
 	textColor = {255, 255, 255, 255};
 }
 
-void Menu::mainMenu(SDL_Renderer *Renderer)
+menuState Menu::mainMenu(SDL_Renderer *Renderer)
 {
 	SDL_SetRenderDrawColor(Renderer, 0, 0, 0, 255);
 	SDL_Rect buttonBox[3], textBox[3];
@@ -136,12 +136,10 @@ void Menu::mainMenu(SDL_Renderer *Renderer)
 				SDL_GetMouseState(&mouseLocation.x, &mouseLocation.y);
 				if(SDL_PointInRect(&mouseLocation, &buttonBox[mouseKey]) == SDL_TRUE)
 				{
-					currentButtonTexture[mouseKey] = button;
-					mouseKey = -1;
+					if(mouseKey == 2)
+						return quitState;
 				}
 			}
-			else if(e.type == SDL_QUIT)
-				currentState = quitState;
 		}
 		SDL_RenderCopy(Renderer, splash, NULL, NULL);
 		for (int i = 0; i <= 2; i++)

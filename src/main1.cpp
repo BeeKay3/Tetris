@@ -66,17 +66,12 @@ int main(int argc, char *args[])
 	if (INIT())
 	{
 		Menu menu;
-		menu.credits(Renderer);
-		menu.mainMenu(Renderer);
 		SDL_Event e;
 		bool quit = false;
 		Uint64 CurrentTicks, FrameTicks;
-
-		CurrentTicks = SDL_GetTicks64();
-		while (quit == false)
-			while (SDL_PollEvent(&e))
-				if (e.type == SDL_QUIT)
-					quit = true;
+		menu.credits(Renderer);
+		if (menu.mainMenu(Renderer) == quitState);
+			quit = true;
 	}
 	CLOSE();
 	return 0;

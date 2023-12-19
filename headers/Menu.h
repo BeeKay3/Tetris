@@ -13,7 +13,7 @@ enum menuState{
 class Menu
 {
 public:
-	void mainMenu(SDL_Renderer *Renderer);
+	menuState mainMenu(SDL_Renderer *Renderer);
 	void credits(SDL_Renderer *Renderer);
 	Menu();
 	~Menu();
