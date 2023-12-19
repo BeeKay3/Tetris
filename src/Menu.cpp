@@ -28,6 +28,12 @@ menuState Menu::mainMenu(SDL_Renderer *Renderer)
 	SDL_SetTextureColorMod(hoverButton, 255, 200, 0);
 	SDL_Texture *clickButton = GetTexture(Renderer, "assets/img/rect.png");
 	SDL_SetTextureColorMod(clickButton, 100, 100, 100);
+	SDL_Texture *smallBlock = GetTexture(Renderer, "assets/img/smallBlock.png");
+	SDL_SetTextureColorMod(smallBlock, 0, 90 ,255);
+	SDL_Texture *hoverSmallBlock = GetTexture(Renderer, "assets/img/smallBlock.png");
+	SDL_SetTextureColorMod(hoverSmallBlock, 255, 200, 0);
+	SDL_Texture *clickSmallBlock = GetTexture(Renderer, "assets/img/smallBlock.png");
+	SDL_SetTextureColorMod(clickSmallBlock, 100, 100 ,100);
 	gameText = GetTexture(Renderer, textFont, "Start", textColor, &textBox[0]);
 	helpText = GetTexture(Renderer, textFont, "Help", textColor, &textBox[1]);
 	quitText = GetTexture(Renderer, textFont, "Quit", textColor, &textBox[2]);
@@ -139,10 +145,48 @@ menuState Menu::mainMenu(SDL_Renderer *Renderer)
 				{
 					if(mouseKey == 0)
 					{
-						
+						currentButtonTexture[mouseKey] = button;
+						mouseKey = -1;
+						SDL_Rect smallRect[2], smallTextBox[2], bigTextBox[2];
+						for (int i = 0; i < 2; i++)
+						{
+							smallRect[i].x = buttonBox[1].x + buttonBox[1].w + 25 - (i * (buttonBox[1].w + 50 + buttonBox[1].h));
+							smallRect[i].y = buttonBox[1].y;
+							smallRect[i].w = buttonBox[1].h;
+							smallRect[i].h = buttonBox[1].h;
+						}
+						std::string levelText[10] = {"Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8", "Level 9", "Level 10"};
+						SDL_Texture *smallTextTexture[2], *bigTextTexture[2];
+						smallTextTexture[0] = GetTexture(Renderer, textFont, ">", textColor, &smallTextBox[0]);
+						smallTextTexture[1] = GetTexture(Renderer, textFont, "<", textColor, &smallTextBox[1]);
+						bigTextTexture[0] = GetTexture(Renderer, textFont, "Play", textColor, &bigTextBox[0]);
+						bigTextTexture[1] = GetTexture(Renderer, textFont, levelText[0], textColor, &bigTextBox[1]);
+						bigTextBox[0].x = buttonBox[0].x + (buttonBox[0].w - bigTextBox[0].w) / 2; bigTextBox[0].y = buttonBox[0].y + (buttonBox[0].h - bigTextBox[0].h) / 2;
+						bigTextBox[1].x = buttonBox[1].x + (buttonBox[1].w - bigTextBox[1].w) / 2; bigTextBox[1].y = buttonBox[1].y + (buttonBox[1].h - bigTextBox[1].h) / 2;
+						smallTextBox[0].x = smallRect[0].x + (smallRect[0].w - smallTextBox[0].w) / 2; smallTextBox[0].y = smallRect[0].y + (smallRect[0].h - smallTextBox[0].h) / 2;
+						smallTextBox[1].x = smallRect[1].x + (smallRect[1].w - smallTextBox[1].w) / 2; smallTextBox[1].y = smallRect[1].y + (smallRect[1].h - smallTextBox[1].h) / 2;
+						SDL_RenderClear(Renderer);
+						SDL_RenderCopy(Renderer, splash, NULL, NULL);
+						SDL_RenderCopy(Renderer, button, NULL, &buttonBox[0]);
+						SDL_RenderCopy(Renderer, button, NULL, &buttonBox[1]);
+						SDL_RenderCopy(Renderer, smallBlock, NULL, &smallRect[0]);
+						SDL_RenderCopy(Renderer, smallBlock, NULL, &smallRect[1]);
+						SDL_RenderCopy(Renderer, smallTextTexture[0], NULL, &smallTextBox[0]);
+						SDL_RenderCopy(Renderer, smallTextTexture[1], NULL, &smallTextBox[1]);
+						SDL_RenderCopy(Renderer, bigTextTexture[0], NULL, &bigTextBox[0]);
+						SDL_RenderCopy(Renderer, bigTextTexture[1], NULL, &bigTextBox[1]);
+						SDL_RenderPresent(Renderer);
+						SDL_Event e;
+						bool quit = false;
+						while(!quit)
+							while(SDL_PollEvent(&e))
+								if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
+									quit = true;
 					}
 					if(mouseKey == 1)
 					{
+						currentButtonTexture[mouseKey] = button;
+						mouseKey = -1;
 						SDL_Texture *staticBackground = SDL_CreateTexture(Renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1920, 1080);
 						SDL_SetRenderTarget(Renderer, staticBackground);
 						SDL_RenderCopy(Renderer, splash, NULL, NULL);
