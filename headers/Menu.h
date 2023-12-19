@@ -3,6 +3,13 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+enum menuState{
+	freshState,
+	playState,
+	pauseState,
+	quitState,
+};
+
 class Menu
 {
 public:

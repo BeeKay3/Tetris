@@ -23,6 +23,10 @@ void Menu::mainMenu(SDL_Renderer *Renderer)
 	SDL_SetTextureBlendMode(splash, SDL_BLENDMODE_BLEND);
 	SDL_Texture *button = GetTexture(Renderer, "assets/img/rect.png");
 	SDL_SetTextureColorMod(button, 0, 90, 255);
+	SDL_Texture *hoverButton = GetTexture(Renderer, "assets/img/rect.png");
+	SDL_SetTextureColorMod(hoverButton, 255, 200, 0);
+	SDL_Texture *clickButton = GetTexture(Renderer, "assets/img/rect.png");
+	SDL_SetTextureColorMod(clickButton, 100, 100, 100);
 	gameText = GetTexture(Renderer, textFont, "Start", textColor, &textBox[0]);
 	helpText = GetTexture(Renderer, textFont, "Help", textColor, &textBox[1]);
 	quitText = GetTexture(Renderer, textFont, "Quit", textColor, &textBox[2]);
@@ -43,7 +47,7 @@ void Menu::mainMenu(SDL_Renderer *Renderer)
 	while(alphaVal <= 255)
 	{
 		SDL_RenderClear(Renderer);
-		if (SDL_GetTicks64() - frameTime > 4 )
+		if (SDL_GetTicks64() - frameTime > 10 )
 		{
 			SDL_SetTextureAlphaMod(splash, alphaVal++);
 			frameTime = SDL_GetTicks64();
@@ -56,7 +60,7 @@ void Menu::mainMenu(SDL_Renderer *Renderer)
 	while(!aKey)
 	{
 		SDL_RenderClear(Renderer);
-		if ( (SDL_GetTicks64() - frameTime) > 20)
+		if ( (SDL_GetTicks64() - frameTime) > 15)
 		{
 			if (buttonBox[0].x > 1400)
 			{
@@ -85,6 +89,66 @@ void Menu::mainMenu(SDL_Renderer *Renderer)
 		SDL_RenderCopy(Renderer, helpText, NULL, &textBox[1]);
 		SDL_RenderCopy(Renderer, quitText, NULL, &textBox[2]);
 
+		SDL_RenderPresent(Renderer);
+	}
+
+	SDL_Event e;
+	SDL_Point mouseLocation;
+	SDL_Texture *currentButtonTexture[3] = {button, button, button};
+	int mouseKey = 0;
+	menuState currentState = freshState;
+	while(currentState == freshState)
+	{
+		SDL_RenderClear(Renderer);
+		SDL_RenderCopy(Renderer, splash, NULL, NULL);
+		while(SDL_PollEvent(&e))
+		{
+			if(e.type == SDL_MOUSEMOTION && mouseKey == -1)
+			{
+				SDL_GetMouseState(&mouseLocation.x, &mouseLocation.y);
+				for(int i = 0; i <= 2; i++)
+				{
+					if(SDL_PointInRect(&mouseLocation, &buttonBox[i]) == SDL_TRUE)
+						currentButtonTexture[i] = hoverButton;
+					else
+						currentButtonTexture[i] = button;
+				}
+			}
+			else if(e.type == SDL_MOUSEBUTTONDOWN || mouseKey != -1)
+			{
+				SDL_GetMouseState(&mouseLocation.x, &mouseLocation.y);
+				for(int i = 0; i <= 2; i++)
+				{
+					if(SDL_PointInRect(&mouseLocation, &buttonBox[i]) == SDL_TRUE)
+					{
+						currentButtonTexture[i] = clickButton;
+						mouseKey = i;
+					}
+				}
+				if(SDL_PointInRect(&mouseLocation, &buttonBox[mouseKey]) == SDL_FALSE)
+				{
+					currentButtonTexture[mouseKey] = button;
+					mouseKey = -1;
+				}
+			}
+			if(e.type == SDL_MOUSEBUTTONUP)
+			{
+				SDL_GetMouseState(&mouseLocation.x, &mouseLocation.y);
+				if(SDL_PointInRect(&mouseLocation, &buttonBox[mouseKey]) == SDL_TRUE)
+				{
+					currentButtonTexture[mouseKey] = button;
+					mouseKey = -1;
+				}
+			}
+			else if(e.type == SDL_QUIT)
+				currentState = quitState;
+		}
+		SDL_RenderCopy(Renderer, splash, NULL, NULL);
+		for (int i = 0; i <= 2; i++)
+			SDL_RenderCopy(Renderer, currentButtonTexture[i], NULL, &buttonBox[i]);
+		SDL_RenderCopy(Renderer, gameText, NULL, &textBox[0]);
+		SDL_RenderCopy(Renderer, helpText, NULL, &textBox[1]);
+		SDL_RenderCopy(Renderer, quitText, NULL, &textBox[2]);
 		SDL_RenderPresent(Renderer);
 	}
 }
