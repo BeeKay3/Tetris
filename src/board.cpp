@@ -10,7 +10,7 @@
 
 const int VERTICALSHIFT = 40, HORIZONTALSHIFT = 710;
 int boardWidth, boardHeight;
-std::fstream log;
+std::fstream game_state;
 
 Board::Board(SDL_Renderer *Renderer, int BLOCKSIZE)
 {
@@ -43,8 +43,8 @@ Board::Board(SDL_Renderer *Renderer, int BLOCKSIZE)
     time_t t = time(0);
     tm *now = localtime(&t);
     std::string file_name = "./game_states/" + std::to_string(now->tm_year + 1900) + std::to_string(now->tm_mon + 1) + std::to_string(now->tm_mday) + std::to_string(now->tm_hour) + std::to_string(now->tm_min) + ".txt";
-    log.open(file_name, std::ios::out);
-    log << "Game played on " << now->tm_year + 1900 << "/" << now->tm_mon + 1 << "/" << now->tm_mday << " " << now->tm_hour << ":" << now->tm_min << std::endl;
+    game_state.open(file_name, std::ios::out);
+    game_state << "Game played on " << now->tm_year + 1900 << "/" << now->tm_mon + 1 << "/" << now->tm_mday << " " << now->tm_hour << ":" << now->tm_min << std::endl;
 
     boardHeight = BLOCKSIZE * 20;
     boardWidth = BLOCKSIZE * 10;
@@ -55,7 +55,7 @@ Board::Board(SDL_Renderer *Renderer, int BLOCKSIZE)
 
 Board::~Board()
 {
-    log.close();
+    game_state.close();
 };
 
 void Board::update()
@@ -110,14 +110,14 @@ void Board::update()
 
 void Board::updateLog()
 {
-    log << std::endl;
+    game_state << std::endl;
     for (int i = 0; i < 20; i++)
     {
         for (int j = 0; j < 10; j++)
         {
-            log << valueGrid[i][j] << " ";
+            game_state << valueGrid[i][j] << " ";
         }
-        log << std::endl;
+        game_state << std::endl;
     }
 }
 
