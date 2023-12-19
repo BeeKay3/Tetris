@@ -22,6 +22,7 @@ menuState Menu::mainMenu(SDL_Renderer *Renderer)
 	SDL_Texture *splash = GetTexture(Renderer, "assets/img/splash.png");
 	SDL_SetTextureBlendMode(splash, SDL_BLENDMODE_BLEND);
 	SDL_Texture *button = GetTexture(Renderer, "assets/img/rect.png");
+	SDL_SetTextureBlendMode(button, SDL_BLENDMODE_BLEND);
 	SDL_SetTextureColorMod(button, 0, 90, 255);
 	SDL_Texture *hoverButton = GetTexture(Renderer, "assets/img/rect.png");
 	SDL_SetTextureColorMod(hoverButton, 255, 200, 0);
@@ -136,6 +137,22 @@ menuState Menu::mainMenu(SDL_Renderer *Renderer)
 				SDL_GetMouseState(&mouseLocation.x, &mouseLocation.y);
 				if(SDL_PointInRect(&mouseLocation, &buttonBox[mouseKey]) == SDL_TRUE)
 				{
+					if(mouseKey == 0)
+					{
+						
+					}
+					if(mouseKey == 1)
+					{
+						SDL_Texture *staticBackground = SDL_CreateTexture(Renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1920, 1080);
+						SDL_SetRenderTarget(Renderer, staticBackground);
+						SDL_RenderCopy(Renderer, splash, NULL, NULL);
+						for (int i = 0; i <= 2; i++)
+							SDL_RenderCopy(Renderer, currentButtonTexture[i], NULL, &buttonBox[i]);
+						SDL_RenderCopy(Renderer, gameText, NULL, &textBox[0]);
+						SDL_RenderCopy(Renderer, helpText, NULL, &textBox[1]);
+						SDL_RenderCopy(Renderer, quitText, NULL, &textBox[2]);
+						help(Renderer, staticBackground);
+					}
 					if(mouseKey == 2)
 						return quitState;
 				}
@@ -190,6 +207,28 @@ void Menu::credits(SDL_Renderer *Renderer)
 		SDL_RenderPresent(Renderer);
 	}
 }
+
+void Menu::help(SDL_Renderer *Renderer, SDL_Texture *staticBackground)
+{
+	SDL_SetTextureBlendMode(staticBackground, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureAlphaMod(staticBackground, 50);
+	SDL_SetRenderTarget(Renderer, NULL);
+	SDL_Rect textBox;
+	textBox.y = 540; textBox.x = 960;
+	SDL_Texture *instructions = GetTexture(Renderer, writeFont, "Press Esc to go back", textColor, &textBox);
+	textBox.x -= textBox.w / 2;
+	SDL_RenderClear(Renderer);
+	SDL_RenderCopy(Renderer, staticBackground, NULL, NULL);
+	SDL_RenderCopy(Renderer, instructions, NULL, &textBox);
+	SDL_RenderPresent(Renderer);
+	SDL_Event e;
+	bool quit = false;
+	while(!quit)
+		while(SDL_PollEvent(&e))
+			if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
+				quit = true;
+}
+
 Menu::~Menu()
 {
 	TTF_CloseFont(textFont);

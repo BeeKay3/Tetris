@@ -15,6 +15,7 @@ class Menu
 public:
 	menuState mainMenu(SDL_Renderer *Renderer);
 	void credits(SDL_Renderer *Renderer);
+	void help(SDL_Renderer *Renderer, SDL_Texture *staticBackground);
 	Menu();
 	~Menu();
 private:
