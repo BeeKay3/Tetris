@@ -7,18 +7,24 @@ enum menuState{
 	freshState,
 	playState,
 	pauseState,
+	resumeState,
+	restartState,
 	quitState,
 };
 
 class Menu
 {
 public:
-	menuState mainMenu(SDL_Renderer *Renderer);
-	void credits(SDL_Renderer *Renderer);
-	void help(SDL_Renderer *Renderer, SDL_Texture *staticBackground);
-	Menu();
+	menuState mainMenu();
+	void credits();
+	void help();
+	menuState pause();
+	Menu(SDL_Renderer *Renderer);
 	~Menu();
 private:
+	SDL_Renderer *menuRenderer;
 	TTF_Font *textFont, *writeFont;
+	SDL_Texture *splash;
 	SDL_Color textColor;
+	menuState currentState;
 };

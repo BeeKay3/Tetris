@@ -65,14 +65,18 @@ int main(int argc, char *args[])
 {
 	if (INIT())
 	{
-		Menu menu;
+		Menu menu(Renderer);
 		SDL_Event e;
 		bool quit = false;
 		Uint64 CurrentTicks, FrameTicks;
-		menu.credits(Renderer);
-		if (menu.mainMenu(Renderer) == quitState);
-			quit = true;
-	}
+		menu.credits();
+		menu.mainMenu();
+		menu.pause();
+		while(!quit)
+			while(SDL_PollEvent(&e))
+				if(e.key.keysym.sym == SDLK_RETURN)
+					quit = true;
+	}			
 	CLOSE();
 	return 0;
 }
