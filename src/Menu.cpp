@@ -225,13 +225,56 @@ void Menu::help()
 	SDL_SetTextureBlendMode(staticBackground, SDL_BLENDMODE_BLEND);
 	SDL_SetTextureAlphaMod(staticBackground, 50);
 	SDL_Rect textBox;
-	textBox.y = 540; textBox.x = 960;
-	SDL_Texture *instructions = GetTexture(menuRenderer, writeFont, "Press Esc to go back", textColor, &textBox);
-	textBox.x -= textBox.w / 2;
+	textBox.y = 200; textBox.x = 960;
 	SDL_RenderClear(menuRenderer);
 	SDL_RenderCopy(menuRenderer, staticBackground, NULL, NULL);
+	
+	SDL_Texture *instructions = GetTexture(menuRenderer, textFont, "Controls", textColor, &textBox);
+	textBox.x = 960 - textBox.w / 2;
 	SDL_RenderCopy(menuRenderer, instructions, NULL, &textBox);
+
+	instructions = GetTexture(menuRenderer, writeFont, "Press Left and Right to move the block", textColor, &textBox);
+	textBox.x = 960 - textBox.w / 2;
+	textBox.y = 300;
+	SDL_RenderCopy(menuRenderer, instructions, NULL, &textBox);
+
+	instructions = GetTexture(menuRenderer, writeFont, "Press Space to rotate the block clockwise", textColor, &textBox);
+	textBox.x = 960 - textBox.w / 2;
+	textBox.y += 50;
+	SDL_RenderCopy(menuRenderer, instructions, NULL, &textBox);
+
+	instructions = GetTexture(menuRenderer, writeFont, "Press Up to hard drop the block", textColor, &textBox);
+	textBox.x = 960 - textBox.w / 2;
+	textBox.y += 50;
+	SDL_RenderCopy(menuRenderer, instructions, NULL, &textBox);
+	
+	instructions = GetTexture(menuRenderer, writeFont, "Press Down to soft drop the block", textColor, &textBox);
+	textBox.x = 960 - textBox.w / 2;
+	textBox.y += 50;
+	SDL_RenderCopy(menuRenderer, instructions, NULL, &textBox);
+
+	instructions = GetTexture(menuRenderer, writeFont, "Press Esc to pause the game", textColor, &textBox);
+	textBox.x = 960 - textBox.w / 2;
+	textBox.y += 50;
+	SDL_RenderCopy(menuRenderer, instructions, NULL, &textBox);
+
+	instructions = GetTexture(menuRenderer, writeFont, "Clear lines by filling with blocks to get points", textColor, &textBox);
+	textBox.x = 960 - textBox.w / 2;
+	textBox.y += 100;
+	SDL_RenderCopy(menuRenderer, instructions, NULL, &textBox);
+
+	instructions = GetTexture(menuRenderer, writeFont, "Get as high of a score as you can", textColor, &textBox);
+	textBox.x = 960 - textBox.w / 2;
+	textBox.y += 50;
+	SDL_RenderCopy(menuRenderer, instructions, NULL, &textBox);
+
+	instructions = GetTexture(menuRenderer, writeFont, "Press Esc to go back", textColor, &textBox);
+	textBox.x = 960 - textBox.w / 2;
+	textBox.y += 200;
+	SDL_RenderCopy(menuRenderer, instructions, NULL, &textBox);
+
 	SDL_RenderPresent(menuRenderer);
+
 	SDL_Event e;
 	bool quit = false;
 	while(!quit)

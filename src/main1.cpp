@@ -69,9 +69,9 @@ int main(int argc, char *args[])
 		SDL_Event e;
 		bool quit = false;
 		Uint64 CurrentTicks, FrameTicks;
-//		menu.credits();
-//		menu.mainMenu();
-//		menu.pause();
+		menu.credits();
+		menu.mainMenu();
+		menu.pause();
 		menu.death("8", "1000", "50");
 	}			
 	CLOSE();
