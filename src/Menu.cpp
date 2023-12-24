@@ -98,7 +98,7 @@ void Menu::credits()
 	SDL_SetRenderDrawColor(menuRenderer, 0, 0, 0, 255);
 	SDL_Rect textBox[9];
 	SDL_Texture *Credits[9];
-	std::string creditText[9] = {"Developed By", "Kathmandu University, B.tech in AI, 1st Year Students",  "Aryan Shakya", "Bikalpa Khachhibhoya", "Sujal Bajracharya", " ", "With Assistance From", "Kathmandu University, Department of Computer Science & Engineering, Lecturer", "Mrs. Rojina Shakya"};
+	std::string creditText[9] = {"Developed By", "Kathmandu University, B.tech in AI, 1st Year Students",  "Aryan Shakya", "Bikalpa Khachhibhoya", "Sujal Bajracharya", " ", "With Guidance From", "Kathmandu University, Department of Computer Science & Engineering, Lecturer", "Mrs. Rojina Shakya"};
 	int alphaVal = 0;
 	for (int i = 0; i <= 8; i++)
 	{
