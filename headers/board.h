@@ -11,11 +11,14 @@ private:
     SDL_Rect background;
     SDL_Renderer *renderer;
     SDL_Texture *baseTile;
+    SDL_Texture *tetrominoTile;
     int boardWidth;
     int boardHeight;
     int HORIZONTALSHIFT;
     int VERTICALSHIFT;
     int BLOCKSIZE;
+    int INITIAL_X;
+    int INITIAL_Y;
     std::fstream game_state;
 
 public:
