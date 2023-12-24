@@ -66,6 +66,7 @@ int main(int argc, char *args[])
 	if (!init())
 		return 1;
 
+	Board b(renderer);
 	SDL_Event e;
 	bool quit = false;
 	Uint64 currentTicks;
@@ -73,8 +74,6 @@ int main(int argc, char *args[])
 	const SDL_Point INITIAL_POS = {INITIAL_X, INITIAL_Y};
 	SDL_Point pos = INITIAL_POS;
 	SDL_Rect currentTetromino[4];
-
-	Board b(renderer, BLOCKSIZE);
 	Tetromino t(renderer, BLOCKSIZE, BASETILE);
 
 	t.update(pos, t.random(), currentTetromino);
@@ -177,8 +176,6 @@ int main(int argc, char *args[])
 			}
 		}
 
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_RenderClear(renderer);
 		b.update();
 		t.render();
 		SDL_RenderPresent(renderer);

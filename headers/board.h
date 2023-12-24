@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include <fstream>
 #include "../headers/Tetromino.h"
 
 class Board
@@ -10,10 +11,17 @@ private:
     SDL_Rect background;
     SDL_Renderer *renderer;
     SDL_Texture *baseTile;
+    int boardWidth;
+    int boardHeight;
+    int HORIZONTALSHIFT;
+    int VERTICALSHIFT;
+    int BLOCKSIZE;
+    std::fstream game_state;
 
 public:
-    Board(SDL_Renderer *Renderer, int BLOCKSIZE);
+    Board(SDL_Renderer *Renderer);
     ~Board();
+    void game();
     void update();
     void updateLog();
     bool collisionGround(SDL_Rect piece[4]);

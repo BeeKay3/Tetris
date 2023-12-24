@@ -8,12 +8,16 @@
 #include "../headers/GetTexture.h"
 #include "../headers/Tetromino.h"
 
-const int VERTICALSHIFT = 40, HORIZONTALSHIFT = 710;
-int boardWidth, boardHeight;
-std::fstream game_state;
-
-Board::Board(SDL_Renderer *Renderer, int BLOCKSIZE)
+Board::Board(SDL_Renderer *Renderer)
 {
+    BLOCKSIZE = 50;
+    boardHeight = BLOCKSIZE * 20;
+    boardWidth = BLOCKSIZE * 10;
+    VERTICALSHIFT = 40;
+    HORIZONTALSHIFT = 710;
+    background = {HORIZONTALSHIFT, VERTICALSHIFT, boardWidth, boardHeight};
+    renderer = Renderer;
+    baseTile = GetTexture(renderer, "./assets/img/block.png");
     std::fstream init_state;
 
     init_state.open("./game_states/initial_state.txt", std::ios::in);
@@ -45,12 +49,6 @@ Board::Board(SDL_Renderer *Renderer, int BLOCKSIZE)
     std::string file_name = "./game_states/" + std::to_string(now->tm_year + 1900) + std::to_string(now->tm_mon + 1) + std::to_string(now->tm_mday) + std::to_string(now->tm_hour) + std::to_string(now->tm_min) + ".txt";
     game_state.open(file_name, std::ios::out);
     game_state << "Game played on " << now->tm_year + 1900 << "/" << now->tm_mon + 1 << "/" << now->tm_mday << " " << now->tm_hour << ":" << now->tm_min << std::endl;
-
-    boardHeight = BLOCKSIZE * 20;
-    boardWidth = BLOCKSIZE * 10;
-    background = {HORIZONTALSHIFT, VERTICALSHIFT, boardWidth, boardHeight};
-    renderer = Renderer;
-    baseTile = GetTexture(renderer, "./assets/img/block.png");
 }
 
 Board::~Board()
@@ -58,8 +56,15 @@ Board::~Board()
     game_state.close();
 };
 
+void Board::game()
+{
+    return;
+}
+
 void Board::update()
 {
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderFillRect(renderer, &background);
     for (int i = 0; i < 20; i++)
