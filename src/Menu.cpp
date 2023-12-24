@@ -244,6 +244,73 @@ void Menu::help()
 	instructions = NULL;
 }
 
+void Menu::death(std::string finalLevel, std::string finalScore, std::string lineClears)
+{
+	TTF_Font *DeathFont = TTF_OpenFont("assets/fonts/Kanit-Bold.ttf", 165), *deathInfoFont = TTF_OpenFont("assets/fonts/Kanit-Bold.ttf", 100);
+	SDL_Rect textBox;
+	SDL_Color infoColor = {255, 255, 255, 255};
+	SDL_Texture *staticBackground = GetTexture(menuRenderer, "assets/img/background.png");
+	SDL_RenderClear(menuRenderer);
+	SDL_RenderCopy(menuRenderer, staticBackground, NULL, NULL);
+
+	SDL_Texture *DeathText = GetTexture(menuRenderer, DeathFont, "Game Over", infoColor, &textBox);
+	textBox.x = 960 - textBox.w / 2;
+	textBox.y = 25; 
+	SDL_RenderCopy(menuRenderer, DeathText, NULL, &textBox);
+
+	infoColor = {0, 255, 255, 255};
+	DeathText = GetTexture(menuRenderer, deathInfoFont, "Final Level", infoColor, &textBox);
+	textBox.x = 75;
+	textBox.y = 300;
+	SDL_RenderCopy(menuRenderer, DeathText, NULL, &textBox);
+
+	DeathText = GetTexture(menuRenderer, deathInfoFont, "Final Score", infoColor, &textBox);
+	textBox.y += textBox.h;
+	SDL_RenderCopy(menuRenderer, DeathText, NULL, &textBox);
+
+	DeathText = GetTexture(menuRenderer, deathInfoFont, "Line Clears", infoColor, &textBox);
+	textBox.y += textBox.h;
+	SDL_RenderCopy(menuRenderer, DeathText, NULL, &textBox);
+
+	infoColor = {0, 90, 255, 255};
+	DeathText = GetTexture(menuRenderer, deathInfoFont, finalLevel, infoColor, &textBox);
+	textBox.x = 1450;
+	textBox.y = 300;
+	SDL_RenderCopy(menuRenderer, DeathText, NULL, &textBox);
+
+	DeathText = GetTexture(menuRenderer, deathInfoFont, finalScore, infoColor, &textBox);
+	textBox.y += textBox.h;
+	SDL_RenderCopy(menuRenderer, DeathText, NULL, &textBox);
+
+	DeathText = GetTexture(menuRenderer, deathInfoFont, lineClears, infoColor, &textBox);
+	textBox.y += textBox.h;
+	SDL_RenderCopy(menuRenderer, DeathText, NULL, &textBox);
+
+	infoColor = {255, 255, 255, 255};
+	DeathText = GetTexture(menuRenderer, writeFont, "Press Esc or Enter to continue", infoColor, &textBox);
+	textBox.x = 960 - textBox.w / 2;
+	textBox.y = 1000 - textBox.h; 
+	SDL_RenderCopy(menuRenderer, DeathText, NULL, &textBox);
+
+	SDL_RenderPresent(menuRenderer);
+
+	SDL_Event e;
+	bool quit = false;
+	while(!quit)
+		while(SDL_PollEvent(&e))
+			if(e.type == SDL_KEYDOWN)
+				if(e.key.keysym.sym == SDLK_ESCAPE || e.key.keysym.sym == SDLK_RETURN)
+					quit = true;
+	TTF_CloseFont(DeathFont);
+	DeathFont = NULL;
+	TTF_CloseFont(deathInfoFont);
+	deathInfoFont = NULL;
+	SDL_DestroyTexture(staticBackground);
+	staticBackground = NULL;
+	SDL_DestroyTexture(DeathText);
+	DeathText = NULL;
+}
+
 Menu::~Menu()
 {
 	TTF_CloseFont(textFont);
