@@ -43,7 +43,7 @@ menuState Menu::mainMenu()
 	Help.CopyToRenderer();
 	Quit.CopyToRenderer();
 	SDL_Event e;
-	int keycheck = 0;
+	int keycheck = 1;
 
 	while (currentState == freshState)
 	{
@@ -154,7 +154,7 @@ menuState Menu::pause()
 	SDL_RenderPresent(menuRenderer);
 
 	SDL_Event e;
-	int keycheck = 0;
+	int keycheck = 1;
 
 	while (currentState == pauseState)
 	{

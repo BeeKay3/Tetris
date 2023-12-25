@@ -41,7 +41,7 @@ void Tetromino::update(SDL_Point p, shape s, SDL_Rect piece[4])
 		Blocks[1] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[2] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[3] = {Center.x - BLOCKSIZE, Center.y - BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
-		SDL_SetTextureColorMod(Tile, 7, 106, 182);
+		SDL_SetTextureColorMod(Tile, 39, 174, 96);
 	}
 	else if (ShapeVal == L_Shape)
 	{

@@ -322,7 +322,7 @@ void Board::update()
                 }
                 else if (valueGrid[i][j] == 4)
                 {
-                    SDL_SetTextureColorMod(baseTile, 7, 106, 182);
+                    SDL_SetTextureColorMod(baseTile, 39, 174, 96);
                     SDL_RenderCopy(renderer, baseTile, NULL, &visibleGrid[i][j]);
                 }
                 else if (valueGrid[i][j] == 5)
