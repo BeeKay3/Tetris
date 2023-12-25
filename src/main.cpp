@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "../headers/board.h"
+#include "../headers/Menu.h"
 
 bool init();
 void close();
@@ -17,12 +18,22 @@ int main(int argc, char *args[])
 		return 1;
 
 	bool run = true;
-
+	Menu menu(renderer);
+	menuState currentState = freshState;
+	menu.credits();
 	while (run)
 	{
-		Board b(renderer);
-		b.game();
-		run = false;
+		if (currentState == freshState || currentState == restartState)
+			currentState = menu.mainMenu();
+		else if (currentState == playState)
+		{
+			Board b(renderer, &menu);
+			currentState = b.game();
+		}
+		else if (currentState == quitState)
+		{
+			run = false;
+		}
 	}
 
 	close();

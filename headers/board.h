@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <fstream>
 #include "../headers/Tetromino.h"
+#include "../headers/Menu.h"
 
 class Board
 {
@@ -19,12 +20,16 @@ private:
     int BLOCKSIZE;
     int INITIAL_X;
     int INITIAL_Y;
+    int score;
+    int totalLinesCleared;
+    int level;
     std::fstream game_state;
+    Menu *menu;
 
 public:
-    Board(SDL_Renderer *Renderer);
+    Board(SDL_Renderer *Renderer, Menu *mainMenu);
     ~Board();
-    void game();
+    menuState game();
     void update();
     void updateLog();
     bool collisionGround(SDL_Rect piece[4]);

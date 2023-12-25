@@ -9,7 +9,7 @@
 #include "../headers/GetTexture.h"
 #include "../headers/Tetromino.h"
 
-Board::Board(SDL_Renderer *Renderer)
+Board::Board(SDL_Renderer *Renderer, Menu *mainMenu)
 {
     BLOCKSIZE = 50;
     boardHeight = BLOCKSIZE * 20;
@@ -23,6 +23,10 @@ Board::Board(SDL_Renderer *Renderer)
     baseTile = GetTexture(renderer, "./assets/img/block.png");
     tetrominoTile = GetTexture(renderer, "assets/img/block.png");
     std::fstream init_state;
+    menu = mainMenu;
+    level = 1;
+    score = 0;
+    totalLinesCleared = 0;
 
     init_state.open("./game_states/initial_state.txt", std::ios::in);
 
@@ -60,7 +64,7 @@ Board::~Board()
     game_state.close();
 };
 
-void Board::game()
+menuState Board::game()
 {
     SDL_Event e;
     bool quit = false;
@@ -68,79 +72,56 @@ void Board::game()
     const SDL_Point INITIAL_POS = {INITIAL_X, INITIAL_Y};
     SDL_Point pos = INITIAL_POS;
     SDL_Rect currentTetromino[4];
+    menuState currentState = playState;
 
     Tetromino t(renderer, BLOCKSIZE, tetrominoTile);
     t.update(pos, t.random(), currentTetromino);
 
     while (!quit)
     {
-        while (SDL_PollEvent(&e))
+        if (currentState == playState)
         {
-            if (e.type == SDL_QUIT)
-                quit = true;
-            else if (e.type == SDL_KEYDOWN)
+            while (SDL_PollEvent(&e))
             {
-                if (e.key.keysym.sym == SDLK_SPACE)
+                if (e.type == SDL_KEYDOWN)
                 {
-                    t.rotate(currentTetromino);
-                    if (collisionBlocks(currentTetromino))
+                    if (e.key.keysym.sym == SDLK_SPACE)
                     {
                         t.rotate(currentTetromino);
-                        t.rotate(currentTetromino);
-                        t.rotate(currentTetromino);
-                    }
-                }
-                else if (e.key.keysym.sym == SDLK_z)
-                {
-                    t.update(INITIAL_POS, t.random(), currentTetromino);
-                    pos = INITIAL_POS;
-                }
-                else if (e.key.keysym.sym == SDLK_LEFT)
-                {
-                    if (!outOfLeftBounds(currentTetromino))
-                    {
-                        pos.x -= 50;
-                        t.update(pos, currentTetromino);
                         if (collisionBlocks(currentTetromino))
                         {
-                            pos.x += 50;
-                            t.update(pos, currentTetromino);
+                            t.rotate(currentTetromino);
+                            t.rotate(currentTetromino);
+                            t.rotate(currentTetromino);
                         }
                     }
-                }
-                else if (e.key.keysym.sym == SDLK_RIGHT)
-                {
-                    if (!outOfRightBounds(currentTetromino))
+                    else if (e.key.keysym.sym == SDLK_LEFT)
                     {
-                        pos.x += 50;
-                        t.update(pos, currentTetromino);
-                        if (collisionBlocks(currentTetromino))
+                        if (!outOfLeftBounds(currentTetromino))
                         {
                             pos.x -= 50;
                             t.update(pos, currentTetromino);
+                            if (collisionBlocks(currentTetromino))
+                            {
+                                pos.x += 50;
+                                t.update(pos, currentTetromino);
+                            }
                         }
                     }
-                }
-                else if (e.key.keysym.sym == SDLK_DOWN)
-                {
-                    pos.y += BLOCKSIZE;
-                    t.update(pos, currentTetromino);
-
-                    if (collisionBlocks(currentTetromino))
+                    else if (e.key.keysym.sym == SDLK_RIGHT)
                     {
-                        pos.y -= BLOCKSIZE;
-                        t.update(pos, currentTetromino);
-                        insert(currentTetromino, t.getShape(), &quit);
-                        lineClear();
-                        updateLog();
-                        t.update(INITIAL_POS, t.random(), currentTetromino);
-                        pos = INITIAL_POS;
+                        if (!outOfRightBounds(currentTetromino))
+                        {
+                            pos.x += 50;
+                            t.update(pos, currentTetromino);
+                            if (collisionBlocks(currentTetromino))
+                            {
+                                pos.x -= 50;
+                                t.update(pos, currentTetromino);
+                            }
+                        }
                     }
-                }
-                else if (e.key.keysym.sym == SDLK_UP)
-                {
-                    bool drop = true;
-                    while (drop)
+                    else if (e.key.keysym.sym == SDLK_DOWN)
                     {
                         pos.y += BLOCKSIZE;
                         t.update(pos, currentTetromino);
@@ -154,68 +135,95 @@ void Board::game()
                             updateLog();
                             t.update(INITIAL_POS, t.random(), currentTetromino);
                             pos = INITIAL_POS;
-                            drop = false;
                         }
-                        else if (collisionGround(currentTetromino))
+                    }
+                    else if (e.key.keysym.sym == SDLK_UP)
+                    {
+                        bool drop = true;
+                        while (drop)
                         {
-                            insert(currentTetromino, t.getShape(), &quit);
-                            lineClear();
-                            updateLog();
-                            t.update(INITIAL_POS, t.random(), currentTetromino);
-                            pos = INITIAL_POS;
-                            drop = false;
+                            pos.y += BLOCKSIZE;
+                            t.update(pos, currentTetromino);
+
+                            if (collisionBlocks(currentTetromino))
+                            {
+                                pos.y -= BLOCKSIZE;
+                                t.update(pos, currentTetromino);
+                                insert(currentTetromino, t.getShape(), &quit);
+                                lineClear();
+                                updateLog();
+                                t.update(INITIAL_POS, t.random(), currentTetromino);
+                                pos = INITIAL_POS;
+                                drop = false;
+                            }
+                            else if (collisionGround(currentTetromino))
+                            {
+                                insert(currentTetromino, t.getShape(), &quit);
+                                lineClear();
+                                updateLog();
+                                t.update(INITIAL_POS, t.random(), currentTetromino);
+                                pos = INITIAL_POS;
+                                drop = false;
+                            }
                         }
+                    }
+                    else if (e.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        currentState = pauseState;
                     }
                 }
             }
-        }
 
-        update();
-        t.render();
-        SDL_RenderPresent(renderer);
-
-        if (SDL_GetTicks64() - currentTicks >= 1000)
-        {
-            currentTicks = SDL_GetTicks64();
-            pos.y += BLOCKSIZE;
-            t.update(pos, currentTetromino);
-
-            if (collisionBlocks(currentTetromino))
-            {
-                pos.y -= BLOCKSIZE;
-                t.update(pos, currentTetromino);
-                insert(currentTetromino, t.getShape(), &quit);
-                lineClear();
-                updateLog();
-                t.update(INITIAL_POS, t.random(), currentTetromino);
-                pos = INITIAL_POS;
-            }
-            else if (collisionGround(currentTetromino))
-            {
-                insert(currentTetromino, t.getShape(), &quit);
-                lineClear();
-                updateLog();
-                t.update(INITIAL_POS, t.random(), currentTetromino);
-                pos = INITIAL_POS;
-            }
-        }
-
-        if (quit == true)
-        {
-            TTF_Font *roboto;
-            roboto = TTF_OpenFont("Roboto-Regular.ttf", 80);
-            SDL_Surface *death_text = TTF_RenderText_Blended(roboto, "You Dead! :P", {255, 83, 112, 255});
-            SDL_Texture *death_msg = SDL_CreateTextureFromSurface(renderer, death_text);
-            SDL_Rect death_rect = {710, 300, death_text->w, death_text->h};
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            SDL_RenderClear(renderer);
-            SDL_RenderCopy(renderer, death_msg, NULL, &death_rect);
+            update();
+            t.render();
             SDL_RenderPresent(renderer);
-            SDL_Delay(3000);
-            SDL_FreeSurface(death_text);
-            SDL_DestroyTexture(death_msg);
+
+            if (SDL_GetTicks64() - currentTicks >= 1000)
+            {
+                currentTicks = SDL_GetTicks64();
+                pos.y += BLOCKSIZE;
+                t.update(pos, currentTetromino);
+
+                if (collisionBlocks(currentTetromino))
+                {
+                    pos.y -= BLOCKSIZE;
+                    t.update(pos, currentTetromino);
+                    insert(currentTetromino, t.getShape(), &quit);
+                    lineClear();
+                    updateLog();
+                    t.update(INITIAL_POS, t.random(), currentTetromino);
+                    pos = INITIAL_POS;
+                }
+                else if (collisionGround(currentTetromino))
+                {
+                    insert(currentTetromino, t.getShape(), &quit);
+                    lineClear();
+                    updateLog();
+                    t.update(INITIAL_POS, t.random(), currentTetromino);
+                    pos = INITIAL_POS;
+                }
+            }
+
+            if (quit == true)
+            {
+                menu->death(std::to_string(level), std::to_string(score), std::to_string(totalLinesCleared));
+                currentState = restartState;
+            }
+        }
+        else if (currentState == pauseState)
+        {
+            currentState = menu->pause();
+        }
+        else if (currentState == restartState)
+        {
+            return currentState;
+        }
+        else if (currentState == quitState)
+        {
+            return quitState;
         }
     }
+    return currentState;
 }
 
 void Board::update()
@@ -369,5 +377,7 @@ int Board::lineClear()
             i++;
         }
     }
+    totalLinesCleared += num;
+    score += (level * 10 * num);
     return num;
 }
