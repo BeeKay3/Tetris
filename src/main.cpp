@@ -2,7 +2,6 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
-#include <string>
 #include "../headers/board.h"
 #include "../headers/Menu.h"
 
@@ -23,17 +22,15 @@ int main(int argc, char *args[])
 	menu.credits();
 	while (run)
 	{
-		if (currentState == freshState || currentState == restartState)
+		if (currentState == freshState)
 			currentState = menu.mainMenu();
-		else if (currentState == playState)
+		else if (currentState == playState || currentState == restartState)
 		{
 			Board b(renderer, &menu);
 			currentState = b.game();
 		}
 		else if (currentState == quitState)
-		{
 			run = false;
-		}
 	}
 
 	close();

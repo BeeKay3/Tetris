@@ -7,22 +7,12 @@
 class Board
 {
 private:
-    int valueGrid[20][10];
-    SDL_Rect visibleGrid[20][10];
-    SDL_Rect background;
+    int valueGrid[20][10], boardWidth, boardHeight, HORIZONTALSHIFT, VERTICALSHIFT, BLOCKSIZE, INITIAL_X, INITIAL_Y, score, totalLinesCleared, level;
+    SDL_Rect visibleGrid[20][10], grid, bg, textBox;
     SDL_Renderer *renderer;
-    SDL_Texture *baseTile;
-    SDL_Texture *tetrominoTile;
-    int boardWidth;
-    int boardHeight;
-    int HORIZONTALSHIFT;
-    int VERTICALSHIFT;
-    int BLOCKSIZE;
-    int INITIAL_X;
-    int INITIAL_Y;
-    int score;
-    int totalLinesCleared;
-    int level;
+    SDL_Texture *baseTile, *tetrominoTile, *nextTetrominoTile, *background, *gridBackground, *textNext, *textScore, *textLevel, *textLines, *textScoreValue, *textLevelValue, *textLinesValue;
+    SDL_Color textColor;
+    TTF_Font *kanit;
     std::fstream game_state;
     Menu *menu;
 

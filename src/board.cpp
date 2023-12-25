@@ -18,10 +18,16 @@ Board::Board(SDL_Renderer *Renderer, Menu *mainMenu)
     HORIZONTALSHIFT = 710;
     INITIAL_X = 910;
     INITIAL_Y = 40;
-    background = {HORIZONTALSHIFT, VERTICALSHIFT, boardWidth, boardHeight};
     renderer = Renderer;
+    grid = {HORIZONTALSHIFT, VERTICALSHIFT, boardWidth, boardHeight};
+    bg = {0, 0, 1920, 1080};
+    background = GetTexture(renderer, "./assets/img/background.png");
+    gridBackground = GetTexture(renderer, "./assets/img/grid.png");
     baseTile = GetTexture(renderer, "./assets/img/block.png");
     tetrominoTile = GetTexture(renderer, "assets/img/block.png");
+    nextTetrominoTile = GetTexture(renderer, "assets/img/block.png");
+    textColor = {255, 255, 255, 255};
+    kanit = TTF_OpenFont("assets/fonts/Kanit-Bold.ttf", 45);
     std::fstream init_state;
     menu = mainMenu;
     level = 1;
@@ -62,6 +68,18 @@ Board::Board(SDL_Renderer *Renderer, Menu *mainMenu)
 Board::~Board()
 {
     game_state.close();
+    SDL_DestroyTexture(gridBackground);
+    SDL_DestroyTexture(baseTile);
+    SDL_DestroyTexture(tetrominoTile);
+    SDL_DestroyTexture(nextTetrominoTile);
+    SDL_DestroyTexture(background);
+    TTF_CloseFont(kanit);
+    gridBackground = NULL;
+    baseTile = NULL;
+    tetrominoTile = NULL;
+    nextTetrominoTile = NULL;
+    background = NULL;
+    kanit = NULL;
 };
 
 menuState Board::game()
@@ -71,11 +89,15 @@ menuState Board::game()
     Uint64 currentTicks;
     const SDL_Point INITIAL_POS = {INITIAL_X, INITIAL_Y};
     SDL_Point pos = INITIAL_POS;
+    SDL_Point nextPos = {HORIZONTALSHIFT + boardWidth + BLOCKSIZE * 2, VERTICALSHIFT + BLOCKSIZE * 4 + 20};
     SDL_Rect currentTetromino[4];
     menuState currentState = playState;
 
     Tetromino t(renderer, BLOCKSIZE, tetrominoTile);
+    Tetromino next(renderer, BLOCKSIZE, nextTetrominoTile);
+    shape nextPiece = next.random();
     t.update(pos, t.random(), currentTetromino);
+    next.update(nextPos, nextPiece, currentTetromino);
 
     while (!quit)
     {
@@ -133,7 +155,9 @@ menuState Board::game()
                             insert(currentTetromino, t.getShape(), &quit);
                             lineClear();
                             updateLog();
-                            t.update(INITIAL_POS, t.random(), currentTetromino);
+                            t.update(INITIAL_POS, nextPiece, currentTetromino);
+                            nextPiece = next.random();
+                            next.update(nextPos, nextPiece, currentTetromino);
                             pos = INITIAL_POS;
                         }
                     }
@@ -152,7 +176,9 @@ menuState Board::game()
                                 insert(currentTetromino, t.getShape(), &quit);
                                 lineClear();
                                 updateLog();
-                                t.update(INITIAL_POS, t.random(), currentTetromino);
+                                t.update(INITIAL_POS, nextPiece, currentTetromino);
+                                nextPiece = next.random();
+                                next.update(nextPos, nextPiece, currentTetromino);
                                 pos = INITIAL_POS;
                                 drop = false;
                             }
@@ -161,7 +187,9 @@ menuState Board::game()
                                 insert(currentTetromino, t.getShape(), &quit);
                                 lineClear();
                                 updateLog();
-                                t.update(INITIAL_POS, t.random(), currentTetromino);
+                                t.update(INITIAL_POS, nextPiece, currentTetromino);
+                                nextPiece = next.random();
+                                next.update(nextPos, nextPiece, currentTetromino);
                                 pos = INITIAL_POS;
                                 drop = false;
                             }
@@ -176,9 +204,10 @@ menuState Board::game()
 
             update();
             t.render();
+            next.render();
             SDL_RenderPresent(renderer);
 
-            if (SDL_GetTicks64() - currentTicks >= 1000)
+            if (SDL_GetTicks64() - currentTicks >= (1000 * (1 - (0.1 * (level - 1)))))
             {
                 currentTicks = SDL_GetTicks64();
                 pos.y += BLOCKSIZE;
@@ -191,15 +220,21 @@ menuState Board::game()
                     insert(currentTetromino, t.getShape(), &quit);
                     lineClear();
                     updateLog();
-                    t.update(INITIAL_POS, t.random(), currentTetromino);
+                    t.update(INITIAL_POS, nextPiece, currentTetromino);
+                    nextPiece = next.random();
+                    next.update(nextPos, nextPiece, currentTetromino);
                     pos = INITIAL_POS;
                 }
                 else if (collisionGround(currentTetromino))
                 {
+                    pos.y -= BLOCKSIZE;
+                    t.update(pos, currentTetromino);
                     insert(currentTetromino, t.getShape(), &quit);
                     lineClear();
                     updateLog();
-                    t.update(INITIAL_POS, t.random(), currentTetromino);
+                    t.update(INITIAL_POS, nextPiece, currentTetromino);
+                    nextPiece = next.random();
+                    next.update(nextPos, nextPiece, currentTetromino);
                     pos = INITIAL_POS;
                 }
             }
@@ -207,7 +242,7 @@ menuState Board::game()
             if (quit == true)
             {
                 menu->death(std::to_string(level), std::to_string(score), std::to_string(totalLinesCleared));
-                currentState = restartState;
+                return freshState;
             }
         }
         else if (currentState == pauseState)
@@ -220,7 +255,7 @@ menuState Board::game()
         }
         else if (currentState == quitState)
         {
-            return quitState;
+            return freshState;
         }
     }
     return currentState;
@@ -228,10 +263,42 @@ menuState Board::game()
 
 void Board::update()
 {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderFillRect(renderer, &background);
+    SDL_RenderCopy(renderer, background, NULL, &bg);
+    SDL_RenderCopy(renderer, gridBackground, NULL, &grid);
+
+    textBox.x = HORIZONTALSHIFT + boardWidth + BLOCKSIZE;
+    textBox.y = VERTICALSHIFT;
+    textScore = GetTexture(renderer, kanit, "Score", textColor, &textBox);
+    SDL_RenderCopy(renderer, textScore, NULL, &textBox);
+
+    textBox.y += textBox.h;
+    textScoreValue = GetTexture(renderer, kanit, std::to_string(score), textColor, &textBox);
+    SDL_RenderCopy(renderer, textScoreValue, NULL, &textBox);
+
+    textBox.y += textBox.h;
+    textNext = GetTexture(renderer, kanit, "Next", textColor, &textBox);
+    SDL_RenderCopy(renderer, textNext, NULL, &textBox);
+
+    textBox.x = HORIZONTALSHIFT - BLOCKSIZE * 3;
+    textBox.y = VERTICALSHIFT;
+    textLevel = GetTexture(renderer, kanit, "Level", textColor, &textBox);
+    SDL_RenderCopy(renderer, textLevel, NULL, &textBox);
+
+    textBox.x += BLOCKSIZE * 1;
+    textBox.y += textBox.h;
+    textLevelValue = GetTexture(renderer, kanit, std::to_string(level), textColor, &textBox);
+    SDL_RenderCopy(renderer, textLevelValue, NULL, &textBox);
+
+    textBox.x -= BLOCKSIZE * 4 + 20;
+    textBox.y += textBox.h;
+    textLines = GetTexture(renderer, kanit, "Lines Cleared", textColor, &textBox);
+    SDL_RenderCopy(renderer, textLines, NULL, &textBox);
+
+    textBox.x += BLOCKSIZE * 4;
+    textBox.y += textBox.h;
+    textLinesValue = GetTexture(renderer, kanit, std::to_string(totalLinesCleared), textColor, &textBox);
+    SDL_RenderCopy(renderer, textLinesValue, NULL, &textBox);
+
     for (int i = 0; i < 20; i++)
     {
         for (int j = 0; j < 10; j++)
@@ -276,6 +343,20 @@ void Board::update()
             }
         }
     }
+    SDL_DestroyTexture(textNext);
+    SDL_DestroyTexture(textScore);
+    SDL_DestroyTexture(textLevel);
+    SDL_DestroyTexture(textLines);
+    SDL_DestroyTexture(textScoreValue);
+    SDL_DestroyTexture(textLevelValue);
+    SDL_DestroyTexture(textLinesValue);
+    textNext = NULL;
+    textScore = NULL;
+    textLevel = NULL;
+    textLines = NULL;
+    textScoreValue = NULL;
+    textLevelValue = NULL;
+    textLinesValue = NULL;
 }
 
 void Board::updateLog()
@@ -295,7 +376,7 @@ bool Board::collisionGround(SDL_Rect piece[4])
 {
     for (int i = 0; i < 4; i++)
     {
-        if (piece[i].y >= 990)
+        if (piece[i].y >= 1040)
             return true;
     }
     return false;
@@ -378,6 +459,12 @@ int Board::lineClear()
         }
     }
     totalLinesCleared += num;
-    score += (level * 10 * num);
+    if (num == 4)
+        score += (level * 10 * (num + 2));
+    else
+        score += (level * 10 * num);
+
+    if ((totalLinesCleared - ((level - 1) * 10) >= (level * 10) && level < 10))
+        level++;
     return num;
 }

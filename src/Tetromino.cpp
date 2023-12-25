@@ -82,9 +82,7 @@ void Tetromino::update(SDL_Point p, shape s, SDL_Rect piece[4])
 
 void Tetromino::update(SDL_Point p, SDL_Rect piece[4])
 {
-	int x1 = p.x, y1 = p.y;
-	x1 -= Center.x;
-	y1 -= Center.y;
+	int x1 = p.x - Center.x, y1 = p.y - Center.y;
 	for (int i = 0; i <= 3; i++)
 	{
 		Blocks[i].x += x1;
