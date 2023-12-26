@@ -3,3 +3,5 @@ build/*
 *.exe
 *.txt
 !game_states/initial_state.txt
+compile_commands.json
+.cache
