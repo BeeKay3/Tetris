@@ -1,7 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <iostream>
 #include <string>
 #include "../headers/Menu.h"
 #include "../headers/GetTexture.h"
@@ -293,7 +292,7 @@ void Menu::death(std::string finalLevel, std::string finalScore, std::string lin
 	TTF_Font *DeathFont = TTF_OpenFont("assets/fonts/Kanit-Bold.ttf", 165), *deathInfoFont = TTF_OpenFont("assets/fonts/Kanit-Bold.ttf", 100);
 	SDL_Rect textBox;
 	SDL_Color infoColor = {255, 255, 255, 255};
-	SDL_Texture *staticBackground = GetTexture(menuRenderer, "assets/img/background.png");
+	SDL_Texture *staticBackground = GetTexture(menuRenderer, "assets/img/background1.png");
 	SDL_RenderClear(menuRenderer);
 	SDL_RenderCopy(menuRenderer, staticBackground, NULL, NULL);
 
