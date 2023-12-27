@@ -87,15 +87,31 @@ menuState Board::game()
     SDL_Event e;
     bool quit = false;
     Uint64 currentTicks;
-    const SDL_Point INITIAL_POS = {INITIAL_X, INITIAL_Y};
-    SDL_Point pos = INITIAL_POS;
-    SDL_Point nextPos = {HORIZONTALSHIFT + boardWidth + BLOCKSIZE * 2, VERTICALSHIFT + BLOCKSIZE * 4 + 20};
+    const SDL_Point INITIAL_POS1 = {INITIAL_X, INITIAL_Y};
+    const SDL_Point INITIAL_POS2 = {INITIAL_X, INITIAL_Y + BLOCKSIZE};
+    SDL_Point nextPos;
+    SDL_Point NEXT_POS1 = {HORIZONTALSHIFT + boardWidth + BLOCKSIZE * 2, VERTICALSHIFT + BLOCKSIZE * 4 + 20};
+    SDL_Point NEXT_POS2 = {HORIZONTALSHIFT + boardWidth + BLOCKSIZE * 2, VERTICALSHIFT + BLOCKSIZE * 5 + 20};
     SDL_Rect currentTetromino[4];
+    SDL_Point pos;
     menuState currentState = playState;
 
     Tetromino t(renderer, BLOCKSIZE, tetrominoTile);
     Tetromino next(renderer, BLOCKSIZE, nextTetrominoTile);
+    shape current = t.random();
     shape nextPiece = next.random();
+
+    if (current == L_Shape || current == J_Shape || current == T_Shape || nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
+    {
+        pos = INITIAL_POS2;
+        nextPos = NEXT_POS2;
+    }
+    else
+    {
+        pos = INITIAL_POS1;
+        nextPos = NEXT_POS1;
+    }
+
     t.update(pos, t.random(), currentTetromino);
     next.update(nextPos, nextPiece, currentTetromino);
 
@@ -155,10 +171,29 @@ menuState Board::game()
                             insert(currentTetromino, t.getShape(), &quit);
                             lineClear();
                             updateLog();
-                            t.update(INITIAL_POS, nextPiece, currentTetromino);
+
+                            if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
+                            {
+                                pos = INITIAL_POS2;
+                            }
+                            else
+                            {
+                                pos = INITIAL_POS1;
+                            }
+
+                            t.update(pos, nextPiece, currentTetromino);
                             nextPiece = next.random();
+
+                            if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
+                            {
+                                nextPos = NEXT_POS2;
+                            }
+                            else
+                            {
+                                nextPos = NEXT_POS1;
+                            }
+
                             next.update(nextPos, nextPiece, currentTetromino);
-                            pos = INITIAL_POS;
                         }
                     }
                     else if (e.key.keysym.sym == SDLK_UP)
@@ -176,10 +211,29 @@ menuState Board::game()
                                 insert(currentTetromino, t.getShape(), &quit);
                                 lineClear();
                                 updateLog();
-                                t.update(INITIAL_POS, nextPiece, currentTetromino);
+
+                                if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
+                                {
+                                    pos = INITIAL_POS2;
+                                }
+                                else
+                                {
+                                    pos = INITIAL_POS1;
+                                }
+
+                                t.update(pos, nextPiece, currentTetromino);
                                 nextPiece = next.random();
+
+                                if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
+                                {
+                                    nextPos = NEXT_POS2;
+                                }
+                                else
+                                {
+                                    nextPos = NEXT_POS1;
+                                }
+
                                 next.update(nextPos, nextPiece, currentTetromino);
-                                pos = INITIAL_POS;
                                 drop = false;
                             }
                             else if (collisionGround(currentTetromino))
@@ -187,10 +241,29 @@ menuState Board::game()
                                 insert(currentTetromino, t.getShape(), &quit);
                                 lineClear();
                                 updateLog();
-                                t.update(INITIAL_POS, nextPiece, currentTetromino);
+
+                                if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
+                                {
+                                    pos = INITIAL_POS2;
+                                }
+                                else
+                                {
+                                    pos = INITIAL_POS1;
+                                }
+
+                                t.update(pos, nextPiece, currentTetromino);
                                 nextPiece = next.random();
+
+                                if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
+                                {
+                                    nextPos = NEXT_POS2;
+                                }
+                                else
+                                {
+                                    nextPos = NEXT_POS1;
+                                }
+
                                 next.update(nextPos, nextPiece, currentTetromino);
-                                pos = INITIAL_POS;
                                 drop = false;
                             }
                         }
@@ -220,10 +293,29 @@ menuState Board::game()
                     insert(currentTetromino, t.getShape(), &quit);
                     lineClear();
                     updateLog();
-                    t.update(INITIAL_POS, nextPiece, currentTetromino);
+
+                    if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
+                    {
+                        pos = INITIAL_POS2;
+                    }
+                    else
+                    {
+                        pos = INITIAL_POS1;
+                    }
+
+                    t.update(pos, nextPiece, currentTetromino);
                     nextPiece = next.random();
+
+                    if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
+                    {
+                        nextPos = NEXT_POS2;
+                    }
+                    else
+                    {
+                        nextPos = NEXT_POS1;
+                    }
+
                     next.update(nextPos, nextPiece, currentTetromino);
-                    pos = INITIAL_POS;
                 }
                 else if (collisionGround(currentTetromino))
                 {
@@ -232,10 +324,29 @@ menuState Board::game()
                     insert(currentTetromino, t.getShape(), &quit);
                     lineClear();
                     updateLog();
-                    t.update(INITIAL_POS, nextPiece, currentTetromino);
+
+                    if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
+                    {
+                        pos = INITIAL_POS2;
+                    }
+                    else
+                    {
+                        pos = INITIAL_POS1;
+                    }
+
+                    t.update(pos, nextPiece, currentTetromino);
                     nextPiece = next.random();
+
+                    if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
+                    {
+                        nextPos = NEXT_POS2;
+                    }
+                    else
+                    {
+                        nextPos = NEXT_POS1;
+                    }
+
                     next.update(nextPos, nextPiece, currentTetromino);
-                    pos = INITIAL_POS;
                 }
             }
 

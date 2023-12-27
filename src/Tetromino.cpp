@@ -27,7 +27,6 @@ void Tetromino::update(SDL_Point p, shape s, SDL_Rect piece[4])
 	}
 	else if (ShapeVal == T_Shape)
 	{
-		Center.y += BLOCKSIZE;
 		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[1] = {Center.x, Center.y - BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
 		Blocks[2] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
@@ -36,7 +35,6 @@ void Tetromino::update(SDL_Point p, shape s, SDL_Rect piece[4])
 	}
 	else if (ShapeVal == J_Shape)
 	{
-		Center.y += BLOCKSIZE;
 		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[1] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[2] = {Center.x - BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
@@ -45,7 +43,6 @@ void Tetromino::update(SDL_Point p, shape s, SDL_Rect piece[4])
 	}
 	else if (ShapeVal == L_Shape)
 	{
-		Center.y += BLOCKSIZE;
 		Blocks[0] = {Center.x, Center.y, BLOCKSIZE, BLOCKSIZE};
 		Blocks[1] = {Center.x + BLOCKSIZE, Center.y - BLOCKSIZE, BLOCKSIZE, BLOCKSIZE};
 		Blocks[2] = {Center.x + BLOCKSIZE, Center.y, BLOCKSIZE, BLOCKSIZE};
