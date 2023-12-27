@@ -7,7 +7,7 @@
 class Board
 {
 private:
-    int valueGrid[20][10], boardWidth, boardHeight, HORIZONTALSHIFT, VERTICALSHIFT, BLOCKSIZE, INITIAL_X, INITIAL_Y, score, totalLinesCleared, level;
+    int valueGrid[20][10], boardWidth, boardHeight, HORIZONTALSHIFT, VERTICALSHIFT, BLOCKSIZE, INITIAL_X, INITIAL_Y, score, totalLinesCleared, level, inum, snum;
     SDL_Rect visibleGrid[20][10], grid, bg, textBox;
     SDL_Renderer *renderer;
     SDL_Texture *baseTile, *tetrominoTile, *nextTetrominoTile, *background, *gridBackground, *textNext, *textScore, *textLevel, *textLines, *textScoreValue, *textLevelValue, *textLinesValue;

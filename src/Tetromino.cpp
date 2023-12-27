@@ -142,7 +142,7 @@ void Tetromino::getBlocks(SDL_Rect Arr[4])
 shape Tetromino::random()
 {
 	srand(time(0));
-	int i = rand() % 8;
+	int i = rand() % 7;
 	if (i == 0)
 		return I_Shape;
 	else if (i == 1)
