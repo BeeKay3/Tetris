@@ -34,7 +34,7 @@ Board::Board(SDL_Renderer *Renderer, Menu *mainMenu)
     score = 0;
     totalLinesCleared = 0;
 
-    init_state.open("./game_states/initial_state.txt", std::ios::in);
+    init_state.open("./assets/game_states/initial_state.txt", std::ios::in);
 
     if (!init_state.is_open())
     {
@@ -60,7 +60,7 @@ Board::Board(SDL_Renderer *Renderer, Menu *mainMenu)
 
     time_t t = time(0);
     tm *now = localtime(&t);
-    std::string file_name = "./game_states/" + std::to_string(now->tm_year + 1900) + std::to_string(now->tm_mon + 1) + std::to_string(now->tm_mday) + std::to_string(now->tm_hour) + std::to_string(now->tm_min) + ".txt";
+    std::string file_name = "./assests/game_states/" + std::to_string(now->tm_year + 1900) + std::to_string(now->tm_mon + 1) + std::to_string(now->tm_mday) + std::to_string(now->tm_hour) + std::to_string(now->tm_min) + ".txt";
     game_state.open(file_name, std::ios::out);
     game_state << "Game played on " << now->tm_year + 1900 << "/" << now->tm_mon + 1 << "/" << now->tm_mday << " " << now->tm_hour << ":" << now->tm_min << std::endl;
 }
@@ -242,6 +242,7 @@ menuState Board::game()
             if (quit == true)
             {
                 menu->death(std::to_string(level), std::to_string(score), std::to_string(totalLinesCleared));
+                game_state << std::endl << "Final Score: " << score << std::endl;
                 return freshState;
             }
         }
@@ -464,7 +465,8 @@ int Board::lineClear()
     else
         score += (level * 10 * num);
 
-    if ((totalLinesCleared - ((level - 1) * 10) >= (level * 10) && level < 10))
+    // if ((totalLinesCleared - ((level - 1) * 10) >= (level * 10) && level < 10))
+    if ((totalLinesCleared >= (level * 10) && level < 10))
         level++;
     return num;
 }
