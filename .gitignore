@@ -1,7 +1,7 @@
 build/*
 *.exe
 *.txt
-!game_states/initial_state.txt
+!assets/game_states/initial_state.txt
 compile_commands.json
 .cache
 .vscode
