@@ -13,7 +13,6 @@ private:
     SDL_Texture *baseTile, *tetrominoTile, *nextTetrominoTile, *background, *gridBackground, *textNext, *textScore, *textLevel, *textLines, *textScoreValue, *textLevelValue, *textLinesValue;
     SDL_Color textColor;
     TTF_Font *kanit;
-    std::fstream game_state;
     Menu *menu;
 
 public:
@@ -21,7 +20,6 @@ public:
     ~Board();
     menuState game();
     void update();
-    void updateLog();
     bool collisionGround(SDL_Rect piece[4]);
     bool outOfLeftBounds(SDL_Rect piece[4]);
     bool outOfRightBounds(SDL_Rect piece[4]);

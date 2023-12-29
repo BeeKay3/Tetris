@@ -356,9 +356,9 @@ void Menu::death(std::string finalLevel, std::string finalScore, std::string lin
 
 Menu::~Menu()
 {
-	TTF_CloseFont(textFont);
+	// TTF_CloseFont(textFont);
 	textFont = NULL;
-	TTF_CloseFont(writeFont);
+	// TTF_CloseFont(writeFont);
 	writeFont = NULL;
 	SDL_DestroyTexture(splash);
 	splash = NULL;

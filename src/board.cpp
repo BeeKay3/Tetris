@@ -1,8 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <iostream>
-#include <fstream>
 #include <ctime>
 #include <string>
 #include "../headers/board.h"
@@ -28,46 +26,23 @@ Board::Board(SDL_Renderer *Renderer, Menu *mainMenu)
     nextTetrominoTile = GetTexture(renderer, "assets/img/block.png");
     textColor = {255, 255, 255, 255};
     kanit = TTF_OpenFont("assets/fonts/Kanit-Bold.ttf", 45);
-    std::fstream init_state;
     menu = mainMenu;
     level = 1;
     score = 0;
     totalLinesCleared = 0;
 
-    init_state.open("./assets/game_states/initial_state.txt", std::ios::in);
-
-    if (!init_state.is_open())
-    {
-        std::cout << "error opening file" << std::endl;
-    }
     for (int i = 0; i < 20; i++)
     {
         for (int j = 0; j < 10; j++)
         {
-            init_state >> valueGrid[i][j];
+            valueGrid[i][j] = 0;
             visibleGrid[i][j] = {HORIZONTALSHIFT + (j * BLOCKSIZE), VERTICALSHIFT + (i * BLOCKSIZE), BLOCKSIZE, BLOCKSIZE};
-            if (init_state.eof())
-            {
-                break;
-            }
-        }
-        if (init_state.eof())
-        {
-            break;
         }
     }
-    init_state.close();
-
-    time_t t = time(0);
-    tm *now = localtime(&t);
-    std::string file_name = "./assests/game_states/" + std::to_string(now->tm_year + 1900) + std::to_string(now->tm_mon + 1) + std::to_string(now->tm_mday) + std::to_string(now->tm_hour) + std::to_string(now->tm_min) + ".txt";
-    game_state.open(file_name, std::ios::out);
-    game_state << "Game played on " << now->tm_year + 1900 << "/" << now->tm_mon + 1 << "/" << now->tm_mday << " " << now->tm_hour << ":" << now->tm_min << std::endl;
 }
 
 Board::~Board()
 {
-    game_state.close();
     SDL_DestroyTexture(gridBackground);
     SDL_DestroyTexture(baseTile);
     SDL_DestroyTexture(tetrominoTile);
@@ -170,7 +145,6 @@ menuState Board::game()
                             t.update(pos, currentTetromino);
                             insert(currentTetromino, t.getShape(), &quit);
                             lineClear();
-                            updateLog();
 
                             if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
                             {
@@ -210,7 +184,6 @@ menuState Board::game()
                                 t.update(pos, currentTetromino);
                                 insert(currentTetromino, t.getShape(), &quit);
                                 lineClear();
-                                updateLog();
 
                                 if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
                                 {
@@ -240,7 +213,6 @@ menuState Board::game()
                             {
                                 insert(currentTetromino, t.getShape(), &quit);
                                 lineClear();
-                                updateLog();
 
                                 if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
                                 {
@@ -292,7 +264,6 @@ menuState Board::game()
                     t.update(pos, currentTetromino);
                     insert(currentTetromino, t.getShape(), &quit);
                     lineClear();
-                    updateLog();
 
                     if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
                     {
@@ -323,7 +294,6 @@ menuState Board::game()
                     t.update(pos, currentTetromino);
                     insert(currentTetromino, t.getShape(), &quit);
                     lineClear();
-                    updateLog();
 
                     if (nextPiece == L_Shape || nextPiece == J_Shape || nextPiece == T_Shape)
                     {
@@ -353,7 +323,6 @@ menuState Board::game()
             if (quit == true)
             {
                 menu->death(std::to_string(level), std::to_string(score), std::to_string(totalLinesCleared));
-                game_state << std::endl << "Final Score: " << score << std::endl;
                 return freshState;
             }
         }
@@ -469,19 +438,6 @@ void Board::update()
     textScoreValue = NULL;
     textLevelValue = NULL;
     textLinesValue = NULL;
-}
-
-void Board::updateLog()
-{
-    game_state << std::endl;
-    for (int i = 0; i < 20; i++)
-    {
-        for (int j = 0; j < 10; j++)
-        {
-            game_state << valueGrid[i][j] << " ";
-        }
-        game_state << std::endl;
-    }
 }
 
 bool Board::collisionGround(SDL_Rect piece[4])
