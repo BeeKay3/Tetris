@@ -5,4 +5,5 @@
 #include <string>
 
 SDL_Texture *GetTexture(SDL_Renderer *, std::string);
-SDL_Texture *GetTexture(SDL_Renderer *, TTF_Font *, std::string, SDL_Color, SDL_Rect *textBox);
+SDL_Texture *GetTexture(SDL_Renderer *, TTF_Font *, std::string, SDL_Color,
+                        SDL_Rect *textBox);

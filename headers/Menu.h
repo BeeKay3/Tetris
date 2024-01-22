@@ -4,29 +4,30 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 
-enum menuState{
-	freshState,
-	playState,
-	pauseState,
-	resumeState,
-	restartState,
-	quitState,
+enum menuState {
+  freshState,
+  playState,
+  pauseState,
+  resumeState,
+  restartState,
+  quitState,
 };
 
-class Menu
-{
+class Menu {
 public:
-	menuState mainMenu();
-	void credits();
-	void help();
-	menuState pause();
-	void death(std::string finalLevel, std::string finalScore, std::string lineClears);
-	Menu(SDL_Renderer *Renderer);
-	~Menu();
+  menuState mainMenu();
+  void credits();
+  void help();
+  menuState pause();
+  void death(std::string finalLevel, std::string finalScore,
+             std::string lineClears);
+  Menu(SDL_Renderer *Renderer);
+  ~Menu();
+
 private:
-	SDL_Renderer *menuRenderer;
-	TTF_Font *textFont, *writeFont;
-	SDL_Texture *splash;
-	SDL_Color textColor;
-	menuState currentState;
+  SDL_Renderer *menuRenderer;
+  TTF_Font *textFont, *writeFont;
+  SDL_Texture *splash;
+  SDL_Color textColor;
+  menuState currentState;
 };
